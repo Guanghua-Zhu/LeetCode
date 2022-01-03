@@ -3,5 +3,6 @@
 /LeetCode.iml
 /target
 
-# LeetCode
-/src/main/java/com/temp/
+# LeetCode Plugin
+src/main/java/com/temp/leetcode/editor/cn/all.json
+src/main/java/com/temp/leetcode/editor/cn/translation.json
