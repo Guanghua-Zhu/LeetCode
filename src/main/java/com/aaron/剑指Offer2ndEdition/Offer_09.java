@@ -32,11 +32,8 @@ import java.util.LinkedList;
 // Related Topics 栈 设计 队列 
 // 👍 393 👎 0
 
-
-import java.util.LinkedList;
-
 /**
- * 剑指offer 09: 用两个栈实现一个队列
+ * 剑指offer·第二版: 09, 用两个栈实现一个队列
  * @author Aaron Zhu
  * @date 2022-1-2
  */
