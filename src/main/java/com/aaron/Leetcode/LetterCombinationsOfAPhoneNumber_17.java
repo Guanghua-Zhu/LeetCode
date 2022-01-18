@@ -42,7 +42,6 @@ import java.util.*;
 // Related Topics 哈希表 字符串 回溯 
 // 👍 1681 👎 0
 
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -53,9 +52,9 @@ import java.util.LinkedList;
  * @date 2022-1-18
  */
 public class LetterCombinationsOfAPhoneNumber_17{
-  public static void main(String[] args) {
-       Solution solution = new Solution();
-  }
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+    }
     /**
      * 回溯法
      */
