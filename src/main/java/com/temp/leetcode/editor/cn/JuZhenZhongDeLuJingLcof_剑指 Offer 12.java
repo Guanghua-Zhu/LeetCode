@@ -15,7 +15,8 @@ package com.temp.leetcode.editor.cn;
 // 示例 1： 
 //
 // 
-//输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+//输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "AB
+//CCED"
 //输出：true
 // 
 //
@@ -43,36 +44,103 @@ package com.temp.leetcode.editor.cn;
 // 👍 487 👎 0
 
 
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * @author Aaron Zhu
  * @date 2022-1-17
  */
 public class JuZhenZhongDeLuJingLcof_剑指 Offer 12{
-    
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-    }
+  public static void main(String[] args) {
+       Solution solution = new Solution();
+  }
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 
+    private int row;
+
+    private int col;
+
+    private boolean exist;
+
+    private boolean[][] usedArray;
+
     public boolean exist(char[][] board, String word) {
-        if( board==null || board[0]==null
-            || word==null || word=="" ) {
-            return false;
+        exist = false;
+
+        if( board==null || board[0]==null || word==null || word=="" // 判空
+            || board.length*board[0].length < word.length() ) { // 剪枝
+            return exist;
         }
 
-        int m = board.length;
-        int n = board[0].length;
-        boolean[][] used = new boolean[m][n];
-
+        row = board.length;
+        col = board[0].length;
+        usedArray = new boolean[row][col];
+        search(board, word, 0, 0, 0);
+        return exist;
     }
 
-    private boolean find(char[][] board, String word,
-        boolean[][] used)
+    public void search(char[][] board, String word, int index, int i, int j) {
+        if( exist ) {
+            // 剪枝
+            return;
+        } else if( index == word.length() ) {
+            // 已经全部找到, 故结束
+            exist = true;
+            return;
+        }
 
+        Set<int[]> indexSet = getAvailableIndexSet(index, i, j);
+        for(int[] tempIndex : indexSet) {
+            int rowIndex = tempIndex[0];
+            int colIndex = tempIndex[1];
+            if( board[rowIndex][colIndex] == word.charAt(index) ) {
+                usedArray[rowIndex][colIndex] = true;
+                search( board, word, index+1, rowIndex, colIndex);
+                usedArray[rowIndex][colIndex] = false;
+            }
+        }
+    }
 
+    public Set<int[]> getAvailableIndexSet(int index, int i, int j) {
+        Set<int[]> indexSet = new TreeSet<>( (a1, a2) -> {
+            if( a1[0] == a2[0] && a1[1] == a2[1] ) {
+                return 0;
+            }
+            return 1;
+        });
+
+        if( index == 0 ) {
+            for(int rowIndex=0; rowIndex<row; rowIndex++) {
+                for (int colIndex=0; colIndex<col; colIndex++ ) {
+                    int[] tempIndex = new int[]{rowIndex, colIndex};
+                    indexSet.add( tempIndex );
+                }
+            }
+            return indexSet;
+        }
+
+        int iMax = i+1 <= row-1 ? i+1 : row-1;
+        int iMin = i-1 >= 0 ? i-1 : 0;
+        int jMax = j+1 <= col-1 ? j+1 : col-1;
+        int jMin = j-1 >= 0 ? j-1 : 0;
+        indexSet.add( new int[]{iMin, j} );
+        indexSet.add( new int[]{iMax, j} );
+        indexSet.add( new int[]{i, jMin} );
+        indexSet.add( new int[]{i, jMax} );
+
+        indexSet.removeIf( tempIndex -> {
+            int rowIndex = tempIndex[0];
+            int colIndex = tempIndex[1];
+            return usedArray[rowIndex][colIndex];
+        } );
+
+        return indexSet;
+    }
 
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
