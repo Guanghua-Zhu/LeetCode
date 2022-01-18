@@ -38,70 +38,71 @@ import java.util.LinkedList;
  * @date 2022-1-2
  */
 public class Offer_09{
-  public static void main(String[] args) {
+    public static void main(String[] args) {
 
-  }
-}
-
-/**
- * 借助两个栈实现
- */
-class CQueue2 {
-    // 用于入栈
-    private LinkedList<Integer> stackA;
-
-    // 用于出栈
-    private LinkedList<Integer> stackB;
-
-    public CQueue2() {
-        stackA = new LinkedList();
-        stackB = new LinkedList();
     }
 
-    public void appendTail(int value) {
-        // 添加元素直接入栈
-        stackA.addLast(value);
-    }
+    /**
+     * 借助两个栈实现
+     */
+    public static class CQueue2 {
+        // 用于入栈
+        private LinkedList<Integer> stackA;
 
-    public int deleteHead() {
-        // B栈不为空, 直接出栈
-        if( !stackB.isEmpty() ) {
+        // 用于出栈
+        private LinkedList<Integer> stackB;
+
+        public CQueue2() {
+            stackA = new LinkedList();
+            stackB = new LinkedList();
+        }
+
+        public void appendTail(int value) {
+            // 添加元素直接入栈
+            stackA.addLast(value);
+        }
+
+        public int deleteHead() {
+            // B栈不为空, 直接出栈
+            if( !stackB.isEmpty() ) {
+                return stackB.removeLast();
+            }
+
+            // A、B栈均为空, 说明无元素
+            if( stackA.isEmpty() ) {
+                return -1;
+            }
+
+            while ( !stackA.isEmpty() ) {
+                Integer e = stackA.removeLast();
+                stackB.addLast( e );
+            }
             return stackB.removeLast();
         }
+    }
 
-        // A、B栈均为空, 说明无元素
-        if( stackA.isEmpty() ) {
-            return -1;
+    /**
+     * 直接使用List
+     */
+    public static class CQueue1 {
+
+        private LinkedList<Integer> list;
+
+        public CQueue1() {
+            list = new LinkedList();
         }
 
-        while ( !stackA.isEmpty() ) {
-            Integer e = stackA.removeLast();
-            stackB.addLast( e );
+        public void appendTail(int value) {
+            list.offer(value);
         }
-        return stackB.removeLast();
+
+        public int deleteHead() {
+            Integer result = list.poll();
+            if( result==null ) {
+                result = -1;
+            }
+            return result;
+        }
     }
 }
 
-/**
- * 直接使用List
-  */
-class CQueue1 {
-
-    private LinkedList<Integer> list;
-
-    public CQueue1() {
-        list = new LinkedList();
-    }
-
-    public void appendTail(int value) {
-        list.offer(value);
-    }
-
-    public int deleteHead() {
-        Integer result = list.poll();
-        if( result==null ) {
-            result = -1;
-        }
-        return result;
-    }
-}
