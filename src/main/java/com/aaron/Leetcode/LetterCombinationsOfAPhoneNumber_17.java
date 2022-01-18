@@ -55,11 +55,6 @@ import java.util.LinkedList;
 public class LetterCombinationsOfAPhoneNumber_17{
   public static void main(String[] args) {
        Solution solution = new Solution();
-
-       String stt1 = "Aaron";
-       stt1 += '2';
-       stt1 = stt1.substring(0, stt1.length()-1);
-      System.out.println("gg");
   }
     /**
      * 回溯法
