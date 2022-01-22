@@ -83,7 +83,7 @@ public class LetterCombinationsOfAPhoneNumber_17{
         private List<String> result;
 
         /**
-         * 当前搜索结果
+         * 状态变量：当前搜索结果
          */
         private StringBuilder sb;
 
@@ -93,13 +93,16 @@ public class LetterCombinationsOfAPhoneNumber_17{
                 return Collections.emptyList();
             }
 
+            // 初始化全局变量
             init();
+            // 从第0个数开始搜索
             search(digits, 0);
+            // 直接返回最终搜索结果
             return result;
         }
 
         /**
-         * 初始化
+         * 初始化全局变量
          */
         private void init() {
             result = new LinkedList<>();

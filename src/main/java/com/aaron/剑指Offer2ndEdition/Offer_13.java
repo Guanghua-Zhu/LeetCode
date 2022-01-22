@@ -45,33 +45,52 @@ public class Offer_13{
      * 回溯法
      */
     public static class Solution1 {
-
         private int result;
 
         private boolean[][] usedFlag;
 
+        /**
+         * 方向向量: 向右、向下
+         */
+        private int[] dx = new int[]{0,1};
+        private int[] dy = new int[]{1,0};
+
         public int movingCount(int m, int n, int k) {
+            if( k<0 ) {
+                return 0;
+            }
+
             init(m, n);
             search(k, 0, 0);
             return result;
         }
 
         private void init(int m, int n) {
-            result = 0;
             usedFlag = new boolean[m][n];
+            // 起点(0,0)是合法的
+            usedFlag[0][0] = true;
+            result = 1;
         }
 
         private void search(int k, int rowIndex, int colIndex) {
-            if( rowIndex<0 || rowIndex>usedFlag.length-1
-                || colIndex<0 || colIndex>usedFlag[0].length-1
-                || calcSum(rowIndex, colIndex)>k || usedFlag[rowIndex][colIndex] ) {
-                return;
-            }
+            // 遍历可选路径
+            for(int i=0; i<2; i++) {
+                // 计算可选路径的坐标
+                int nextRowIndex = rowIndex + dx[i];
+                int nextColIndex = colIndex + dy[i];
 
-            usedFlag[rowIndex][colIndex] = true;
-            result++;
-            search(k, rowIndex, colIndex+1);
-            search(k, rowIndex+1, colIndex);
+                // 满足搜索条件
+                if( nextRowIndex>=0 && nextRowIndex<=usedFlag.length-1
+                    && nextColIndex>=0 && nextColIndex<=usedFlag[0].length-1
+                    && calcSum(nextRowIndex, nextColIndex)<=k && !usedFlag[nextRowIndex][nextColIndex] ) {
+                    // 更新计数值到结果变量
+                    result++;
+                    // 更新状态变量, 将其设置为已访问
+                    usedFlag[nextRowIndex][nextColIndex] = true;
+                    // 向下或向右继续搜索
+                    search(k, nextRowIndex, nextColIndex);
+                }
+            }
         }
 
         /**
@@ -92,9 +111,8 @@ public class Offer_13{
             }
             return sum;
         }
-
     }
-
+    
     /**
      * BFS
      */

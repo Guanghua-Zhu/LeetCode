@@ -51,18 +51,27 @@ public class NQueens_51{
     }
 
     public static class Solution {
-
+        /**
+         * 最终结果：所有N皇后问题的解决方案
+         */
         private List<List<String>> result;
 
-        // n*n的棋盘布局, true: 表示相应网格放置了皇后, false: 表示相应网格未放置皇后
+        /**
+         * 状态变量：n*n的棋盘布局, true: 表示相应网格放置了皇后, false: 表示相应网格未放置皇后
+         */
         private Boolean[][] board;
 
         public List<List<String>> solveNQueens(int n) {
             init(n);
+            // 从第0行开始放置皇后
             search(n, 0);
             return result;
         }
 
+        /**
+         * 全局变量初始化
+         * @param n
+         */
         private void init(int n) {
             result = new LinkedList<>();
             board = new Boolean[n][n];
@@ -71,8 +80,15 @@ public class NQueens_51{
             }
         }
 
+        /**
+         * 递归法搜索
+         * @param n
+         * @param rowIndex 放置第rowIndex行的皇后
+         */
         private void search(int n, int rowIndex) {
+            // N个皇后全部放置完毕
             if(rowIndex == n) {
+                // 将状态变量转换为棋盘布局, 并添加到最终结果当中
                 convert();
                 return;
             }
@@ -87,6 +103,12 @@ public class NQueens_51{
 
         }
 
+        /**
+         * 判断选择的合法性
+         * @param rowIndex
+         * @param colIndex
+         * @return
+         */
         private boolean isValid(int rowIndex, int colIndex) {
             // 所在列不能有皇后
             for(int i=0; i<board.length; i++) {
@@ -125,14 +147,19 @@ public class NQueens_51{
             return true;
         }
 
+        /**
+         * 将状态变量转换为棋盘布局, 并添加到最终结果当中
+         */
         private void convert() {
             List<String> tempList = new LinkedList<>();
             for(int i=0; i<board.length; i++) {
                 String rowStr = Arrays.stream( board[i] )
                     .map( e -> {
+                        // true: 表示相应网格放置了皇后
                         if( e ) {
                             return "Q";
                         }
+                        // false: 表示相应网格未放置皇后
                         return ".";
                     } )
                     .collect(Collectors.joining());
