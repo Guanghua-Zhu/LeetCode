@@ -21,7 +21,7 @@ import java.util.*;
 
 
 /**
- * 剑指 Offer 56 - I, 数组中数字出现的次数
+ * 剑指 Offer 56-I, 数组中数字出现的次数
  * @author Aaron Zhu
  * @date 2022-2-5
  */
@@ -32,6 +32,11 @@ public class Offer_56_1 {
 
     public static class Solution {
 
+        /**
+         * 异或运算
+         * @param nums
+         * @return
+         */
         public int[] singleNumbers(int[] nums) {
             int result = 0;
             for(int num : nums) {
@@ -57,6 +62,9 @@ public class Offer_56_1 {
         }
     }
 
+    /**
+     * 遍历统计
+     */
     public static class Solution1 {
         public int[] singleNumbers(int[] nums) {
             Map<Integer, Integer> count = new HashMap<>();
