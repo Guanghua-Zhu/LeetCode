@@ -238,7 +238,6 @@ public class Offer_20 {
         }
     }
 
-
     /**
      * DFA 确定有限状态自动机
      */
@@ -341,20 +340,17 @@ public class Offer_20 {
          * 输入类型
          */
         public enum InputType {
-            OTHER(0, "非法输入"),
-            BLANK(1, "空格"),
-            NUMBER(2, "数字"),
-            SIGN(3, "符号位"),
-            DOT(4, "小数点"),
-            POWER(5,"指数符号"),
+            OTHER("非法输入"),
+            BLANK("空格"),
+            NUMBER("数字"),
+            SIGN("符号位"),
+            DOT("小数点"),
+            POWER("指数符号"),
             ;
-
-            private int code;
 
             private String name;
 
-            InputType(int code, String name) {
-                this.code = code;
+            InputType(String name) {
                 this.name = name;
             }
 
