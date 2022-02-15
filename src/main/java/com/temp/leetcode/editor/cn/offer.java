@@ -1,7 +1,6 @@
 package com.temp.leetcode.editor.cn;
 
 import com.aaron.剑指Offer2ndEdition.Offer_20;
-import com.sun.corba.se.spi.ior.IdentifiableFactoryFinder;
 
 import java.util.*;
 
@@ -67,11 +66,11 @@ import java.util.*;
  * @author Aaron Zhu
  * @date 2022-2-13
  */
-public class ZhengZeBiaoDaShiPiPeiLcof_面试题19{
-//public class offer {
+//public class ZhengZeBiaoDaShiPiPeiLcof_面试题19{
+public class offer {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        boolean res = solution.isMatch("ab",".*c");
+        boolean res = solution.isMatch("ab",".*");
         System.out.println("gg");
     }
 }
@@ -91,7 +90,11 @@ class Solution {
      * 第一层Map, key: 当前状态
      * 第二层Map, key: 输入类型; value: 下一个状态
      */
-    private static Map<Integer, Map<Character, Integer>> transferRule;
+    private Map<Integer, Map<Character, Integer>> transferRule;
+
+    private int initState = -1;
+
+    private int endState;
 
     public boolean isMatch(String s, String p) {
         if( s==null || s=="" || p==null || p=="" ) {
@@ -99,16 +102,8 @@ class Solution {
         }
 
         buildNFA(p);
-        char[] chars = s.toCharArray();
-        int state = -1;
-        for(int index=0; index<chars.length; index++) {
-            Map<Character, Integer> map = transferRule.get(state);
-            if( map.containsKey(epsilonCharacter) ) {
-
-            }
-        }
-
-
+        boolean res = search(s.toCharArray(), 0, initState);
+        return res;
     }
 
     /**
@@ -117,12 +112,12 @@ class Solution {
      */
     private void buildNFA(String p) {
         transferRule = new HashMap<>();
-        int state = -1;
+        int state = initState;
         char[] chars = p.toCharArray();
         for(int index=0; index<chars.length; index++) {
             char ch = chars[index];
             if( (ch>='a' && ch<='z') || ch=='.' ) {
-                Map<Character, Integer> map = transferRule.computeIfAbsent(state , HashMap::new);
+                Map<Character, Integer> map = transferRule.computeIfAbsent(state, key->new HashMap<>() );
                 map.put(ch, state+1);
                 state++;
             } else if ( ch=='*' ) {
@@ -134,14 +129,41 @@ class Solution {
                 lastMap.put( epsilonCharacter, state );
 
                 // 建立 state状态 -> state状态 的重复转移, 其中转移条件即为 重复字符
-                Map<Character, Integer> map = transferRule.computeIfAbsent( state , HashMap::new);
+                Map<Character, Integer> map = transferRule.computeIfAbsent( state , key->new HashMap<>() );
                 map.put(repeatChar, state);
             }
         }
+
+        endState = state;
     }
 
-    private boolean search(int index, int state) {
+    private boolean search(char[] chars, int index, int state) {
+        if( index > chars.length-1 && state == endState) {
+            return true;
+        }
 
+        if( index > chars.length-1 ) {
+            return false;
+        } else if( !transferRule.containsKey(state) ) {
+            return false;
+        }
+
+        boolean res1 = false;
+        boolean res2 = false;
+        // 获取当前状态下的转移规则
+        Map<Character, Integer> map = transferRule.get( state );
+        for(Map.Entry<Character, Integer> entry : map.entrySet()) {
+            char inputType = entry.getKey();
+            int nextState = entry.getValue();
+
+            if( inputType==epsilonCharacter ) {
+                res1 = search(chars, index, nextState );
+            } else if( chars[index]==inputType || chars[index]==anyCharacter ) {
+                res2 = search(chars, index+1, nextState );
+            }
+        }
+
+        return res1 || res2;
     }
 
 }
