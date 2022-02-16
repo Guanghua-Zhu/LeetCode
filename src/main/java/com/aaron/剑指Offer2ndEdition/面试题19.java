@@ -1,6 +1,4 @@
-package com.temp.leetcode.editor.cn;
-
-import com.aaron.剑指Offer2ndEdition.Offer_20;
+package com.aaron.剑指Offer2ndEdition;
 
 import java.util.*;
 
@@ -66,121 +64,39 @@ import java.util.*;
  * @author Aaron Zhu
  * @date 2022-2-13
  */
-//public class ZhengZeBiaoDaShiPiPeiLcof_面试题19{
-public class offer {
+public class 面试题19 {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        boolean res = solution.isMatch("ab",".*");
+        boolean res = solution.isMatch("mississippi","mis*is*ip*.");
         System.out.println("gg");
     }
 }
 
-//leetcode submit region begin(Prohibit modification and deletion)
-/**
- * NFA 非确定有限状态自动机
- */
-class Solution {
-
-    private static final Character epsilonCharacter = '+';
-
-    private static final Character anyCharacter = '.';
-
-    /**
-     * 状态转移规则, 当前状态 + 输入类型 -> 下一个状态
-     * 第一层Map, key: 当前状态
-     * 第二层Map, key: 输入类型; value: 下一个状态
-     */
-    private Map<Integer, Map<Character, Integer>> transferRule;
-
-    private int initState = -1;
-
-    private int endState;
-
-    public boolean isMatch(String s, String p) {
-        if( s==null || s=="" || p==null || p=="" ) {
-            return false;
-        }
-
-        buildNFA(p);
-        boolean res = search(s.toCharArray(), 0, initState);
-        return res;
-    }
-
-    /**
-     * 构建NFA
-     * @param p
-     */
-    private void buildNFA(String p) {
-        transferRule = new HashMap<>();
-        int state = initState;
-        char[] chars = p.toCharArray();
-        for(int index=0; index<chars.length; index++) {
-            char ch = chars[index];
-            if( (ch>='a' && ch<='z') || ch=='.' ) {
-                Map<Character, Integer> map = transferRule.computeIfAbsent(state, key->new HashMap<>() );
-                map.put(ch, state+1);
-                state++;
-            } else if ( ch=='*' ) {
-                // 获取可以进行重复匹配的字符
-                char repeatChar = chars[index-1];
-                Map<Character, Integer> lastMap = transferRule.get(state-1);
-                // 将 state-1状态 -> state状态 的转移条件由 重复字符 改为 空转移
-                lastMap.remove( repeatChar );
-                lastMap.put( epsilonCharacter, state );
-
-                // 建立 state状态 -> state状态 的重复转移, 其中转移条件即为 重复字符
-                Map<Character, Integer> map = transferRule.computeIfAbsent( state , key->new HashMap<>() );
-                map.put(repeatChar, state);
-            }
-        }
-
-        endState = state;
-    }
-
-    private boolean search(char[] chars, int index, int state) {
-        if( index > chars.length-1 && state == endState) {
-            return true;
-        }
-
-        if( index > chars.length-1 ) {
-            return false;
-        } else if( !transferRule.containsKey(state) ) {
-            return false;
-        }
-
-        boolean res1 = false;
-        boolean res2 = false;
-        // 获取当前状态下的转移规则
-        Map<Character, Integer> map = transferRule.get( state );
-        for(Map.Entry<Character, Integer> entry : map.entrySet()) {
-            char inputType = entry.getKey();
-            int nextState = entry.getValue();
-
-            if( inputType==epsilonCharacter ) {
-                res1 = search(chars, index, nextState );
-            } else if( chars[index]==inputType || chars[index]==anyCharacter ) {
-                res2 = search(chars, index+1, nextState );
-            }
-        }
-
-        return res1 || res2;
-    }
-
-}
-
-
-//leetcode submit region end(Prohibit modification and deletion)
-
 /**
  * NFA 非确定有限状态自动机 + 回溯
  */
-class Solution1 {
+class Solution {
+    /**
+     * NFA 非确定有限状态自动机
+     */
     private List<Character> state;
 
+    /**
+     * 可重复的状态位置索引
+     */
     private Set<Integer> repeatSet;
 
+    /**
+     * 可通过空转移进入的状态位置索引
+     */
     private Set<Integer> epsilonSet;
 
+    /**
+     * 判断字符串是否匹配正则表达式
+     * @param s 字符串
+     * @param p 正则表达式
+     * @return
+     */
     public boolean isMatch(String s, String p) {
         if( s==null || s=="" || p==null || p=="" ) {
             return false;
@@ -191,29 +107,30 @@ class Solution1 {
         epsilonSet = new HashSet<>();
 
         // 构建NFA
-        int index = 0;
+        int index = -1;
         for(char ch : p.toCharArray()) {
             if( (ch>='a' && ch<='z') || ch=='.' ) {
                 state.add(ch);
                 index++;
             } else if( ch=='*' ) {
-                // *号前面的字符可以重复
-                repeatSet.add( index-1 );
-                // 从 state[index-2]状态 到 state[index-1]状态 为 空转移
-                epsilonSet.add( index-1);
+                // * 前面的字符可以重复
+                repeatSet.add( index );
+                // 从 state[index-1]状态 到 state[index]状态 为 空转移
+                epsilonSet.add( index);
             }
         }
 
-        char[] chars = s.toCharArray();
-        boolean res = dfs(chars, -1, -1,0);
+        boolean res = dfs(s.toCharArray(), -1, -1,0);
         return res;
     }
 
     private boolean dfs(char[] chars, int charsIndex, int stateIndex, int opsType) {
+        // 字符串已经遍历完毕 且 NFA状态已经全部遍历完毕, 则说明正则匹配成功
         if( charsIndex > chars.length-1 && stateIndex > state.size()-1 ) {
             return true;
         }
 
+        // 字符串已经遍历完毕 或 NFA状态已经全部遍历完毕, 则说明正则匹配失败
         if( charsIndex > chars.length-1 || stateIndex > state.size()-1 ) {
             return false;
         }
@@ -221,20 +138,25 @@ class Solution1 {
         // 通过 空转移 进入的
         if( opsType==1 ) {
             if( !epsilonSet.contains(stateIndex) ) {
+                // 当前状态不可通过空转移进入
                 return false;
             }
         } else if ( opsType==2 ) { // 通过 匹配下一个状态 进入的
             if( epsilonSet.contains(stateIndex) ) {
+                // 当前状态如果可以通过空转移进入，则就不应该消耗输入字符
                 return false;
             }
             if( chars[charsIndex]!=state.get(stateIndex) && state.get(stateIndex)!='.' ) {
+                // 当前状态与指定字符 不匹配
                 return false;
             }
         } else if( opsType==3 ) {   // 通过 重复匹配当前状态 进入的
             if( !repeatSet.contains(stateIndex) ) {
+                // 当前状态不可重复进入
                 return false;
             }
             if( chars[charsIndex]!=state.get(stateIndex) && state.get(stateIndex)!='.' ) {
+                // 当前状态与指定字符 不匹配
                 return false;
             }
         }
