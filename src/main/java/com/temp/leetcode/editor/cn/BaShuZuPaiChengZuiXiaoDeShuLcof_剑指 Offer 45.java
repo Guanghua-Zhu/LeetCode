@@ -41,65 +41,34 @@ import java.util.stream.Collectors;
  * @author Aaron Zhu
  * @date 2022-2-16
  */
-public class BaShuZuPaiChengZuiXiaoDeShuLcof_剑指 Offer 45{
-    
+public class BaShuZuPaiChengZuiXiaoDeShuLcof_剑指 Offer 45 {
+//public class Offer {
+
     public static void main(String[] args) {
         Solution solution = new Solution();
+
+        String res = solution.minNumber( new int[]{8308,308} );
+        System.out.println("gg");
     }
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
-import java.math.BigDecimal;
-
 class Solution {
     public String minNumber(int[] nums) {
-        List<Integer> numList = Arrays.stream(nums)
+        return Arrays.stream(nums)
             .boxed()
             .sorted( (num1, num2)->compare(num1,num2) )
-            .collect(Collectors.toList());
-
-
-
+            .map( Object::toString )
+            .collect(Collectors.joining());
     }
 
     private int compare(Integer num1, Integer num2) {
-        String num1Str = num1.toString();
-        String num2Str = num2.toString();
-        int num1Size = num1Str.length();
-        int num2Size = num2Str.length();
-        int maxSize = Math.max(num1Size, num2Size);
-
-        int result = num1Str.charAt(0) - num2Str.charAt(0);
-        if( result!=0 ) {
-            return result;
-        }
-
-        char firstNum = num1Str.charAt(0);
-        char num1Ch;
-        char num2Ch;
-        for(int i=0; i<maxSize; i++) {
-            if( i<num1Size ) {
-                num1Ch = num1Str.charAt(i);
-            } else {
-                num1Ch = firstNum;
-            }
-
-            if( i<num2Size ) {
-                num2Ch = num2Str.charAt(i);
-            } else {
-                num2Ch = firstNum;
-            }
-
-            result = num1Ch - num2Ch;
-            if( result!=0 ) {
-                break;
-            }
-        }
-
-        return result;
+        String res1 = num1+""+num2;
+        String res2 = num2+""+num1;
+        long res = Long.valueOf(res1) - Long.valueOf(res2);
+        return (int)res;
     }
-
 
 }
 //leetcode submit region end(Prohibit modification and deletion)
