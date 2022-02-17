@@ -53,63 +53,53 @@ public class BaShuZuPaiChengZuiXiaoDeShuLcof_剑指 Offer 45{
 import java.math.BigDecimal;
 
 class Solution {
-
-    private String res;
-
-    private boolean[] usedFlag;
-
-    private List<Integer> state;
-
     public String minNumber(int[] nums) {
-        init(nums);
-        search(nums, 1);
+        List<Integer> numList = Arrays.stream(nums)
+            .boxed()
+            .sorted( (num1, num2)->compare(num1,num2) )
+            .collect(Collectors.toList());
 
-        return res.toString();
+
+
     }
 
-    private void init(int[] nums) {
-        res = null;
-        usedFlag = new boolean[nums.length];
-        state = new ArrayList<>();
-    }
+    private int compare(Integer num1, Integer num2) {
+        String num1Str = num1.toString();
+        String num2Str = num2.toString();
+        int num1Size = num1Str.length();
+        int num2Size = num2Str.length();
+        int maxSize = Math.max(num1Size, num2Size);
 
-    private void search(int[] nums, int count) {
-        if(count > nums.length) {
-            convertRes();
-            return;
+        int result = num1Str.charAt(0) - num2Str.charAt(0);
+        if( result!=0 ) {
+            return result;
         }
 
-        for(int i=0; i<nums.length; i++) {
-            if( usedFlag[i] ) {
-                continue;
+        char firstNum = num1Str.charAt(0);
+        char num1Ch;
+        char num2Ch;
+        for(int i=0; i<maxSize; i++) {
+            if( i<num1Size ) {
+                num1Ch = num1Str.charAt(i);
+            } else {
+                num1Ch = firstNum;
             }
 
-            usedFlag[i] = true;
-            state.add( nums[i] );
+            if( i<num2Size ) {
+                num2Ch = num2Str.charAt(i);
+            } else {
+                num2Ch = firstNum;
+            }
 
-            search(nums, count+1);
-
-            usedFlag[i] = false;
-            state.remove( state.size()-1 );
+            result = num1Ch - num2Ch;
+            if( result!=0 ) {
+                break;
+            }
         }
+
+        return result;
     }
 
-    private void convertRes() {
-         String currentStr = state.stream()
-             .map( e -> e.toString() )
-            .collect( Collectors.joining() );
 
-         if( res==null ) {
-             res = currentStr;
-             return;
-         }
-
-        BigDecimal currentStrNum = new BigDecimal(currentStr);
-        BigDecimal resNum = new BigDecimal(res);
-
-        if( resNum.compareTo( currentStrNum ) > 0 ) {
-             res = currentStr;
-         }
-    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
