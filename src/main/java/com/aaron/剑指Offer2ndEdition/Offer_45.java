@@ -1,8 +1,6 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.剑指Offer2ndEdition;
 
-import java.math.BigDecimal;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 //输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。 
@@ -38,37 +36,32 @@ import java.util.stream.Collectors;
 
 
 /**
+ * 剑指 Offer 45, 把数组排成最小的数
  * @author Aaron Zhu
  * @date 2022-2-16
  */
-public class BaShuZuPaiChengZuiXiaoDeShuLcof_剑指 Offer 45 {
-//public class Offer {
-
+public class Offer_45 {
     public static void main(String[] args) {
         Solution solution = new Solution();
-
         String res = solution.minNumber( new int[]{8308,308} );
         System.out.println("gg");
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
+    public static class Solution {
+        public String minNumber(int[] nums) {
+            return Arrays.stream(nums)
+                .boxed()
+                .sorted( (num1, num2)->compare(num1,num2) )
+                .map( Object::toString )
+                .collect(Collectors.joining());
+        }
 
-class Solution {
-    public String minNumber(int[] nums) {
-        return Arrays.stream(nums)
-            .boxed()
-            .sorted( (num1, num2)->compare(num1,num2) )
-            .map( Object::toString )
-            .collect(Collectors.joining());
+        private int compare(Integer num1, Integer num2) {
+            String res1 = num1+""+num2;
+            String res2 = num2+""+num1;
+            long res = Long.valueOf(res1) - Long.valueOf(res2);
+            return (int)res;
+        }
+
     }
-
-    private int compare(Integer num1, Integer num2) {
-        String res1 = num1+""+num2;
-        String res2 = num2+""+num1;
-        long res = Long.valueOf(res1) - Long.valueOf(res2);
-        return (int)res;
-    }
-
 }
-//leetcode submit region end(Prohibit modification and deletion)
