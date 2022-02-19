@@ -70,99 +70,100 @@ public class 面试题19 {
         boolean res = solution.isMatch("mississippi","mis*is*ip*.");
         System.out.println("gg");
     }
-}
 
-/**
- * NFA 非确定有限状态自动机 + 回溯
- */
-class Solution {
-    /**
-     * NFA 非确定有限状态自动机
-     */
-    private List<Character> state;
 
     /**
-     * 可重复的状态位置索引
+     * NFA 非确定有限状态自动机 + 回溯
      */
-    private Set<Integer> repeatSet;
+    public static class Solution {
+        /**
+         * NFA 非确定有限状态自动机
+         */
+        private List<Character> state;
 
-    /**
-     * 可通过空转移进入的状态位置索引
-     */
-    private Set<Integer> epsilonSet;
+        /**
+         * 可重复的状态位置索引
+         */
+        private Set<Integer> repeatSet;
 
-    /**
-     * 判断字符串是否匹配正则表达式
-     * @param s 字符串
-     * @param p 正则表达式
-     * @return
-     */
-    public boolean isMatch(String s, String p) {
-        if( s==null || s=="" || p==null || p=="" ) {
-            return false;
-        }
+        /**
+         * 可通过空转移进入的状态位置索引
+         */
+        private Set<Integer> epsilonSet;
 
-        state = new ArrayList<>();
-        repeatSet = new HashSet<>();
-        epsilonSet = new HashSet<>();
-
-        // 构建NFA
-        int index = -1;
-        for(char ch : p.toCharArray()) {
-            if( (ch>='a' && ch<='z') || ch=='.' ) {
-                state.add(ch);
-                index++;
-            } else if( ch=='*' ) {
-                // * 前面的字符可以重复
-                repeatSet.add( index );
-                // 从 state[index-1]状态 到 state[index]状态 为 空转移
-                epsilonSet.add( index);
-            }
-        }
-
-        boolean res = dfs(s.toCharArray(), -1, -1,0);
-        return res;
-    }
-
-    private boolean dfs(char[] chars, int charsIndex, int stateIndex, int opsType) {
-        // 字符串已经遍历完毕 且 NFA状态已经全部遍历完毕, 则说明正则匹配成功
-        if( charsIndex > chars.length-1 && stateIndex > state.size()-1 ) {
-            return true;
-        }
-
-        // 字符串已经遍历完毕 或 NFA状态已经全部遍历完毕, 则说明正则匹配失败
-        if( charsIndex > chars.length-1 || stateIndex > state.size()-1 ) {
-            return false;
-        }
-
-        // 通过 空转移 进入的
-        if( opsType==1 ) {
-            if( !epsilonSet.contains(stateIndex) ) {
-                // 当前状态不可通过空转移进入
+        /**
+         * 判断字符串是否匹配正则表达式
+         * @param s 字符串
+         * @param p 正则表达式
+         * @return
+         */
+        public boolean isMatch(String s, String p) {
+            if( s==null || s=="" || p==null || p=="" ) {
                 return false;
             }
-        } else if ( opsType==2 ) { // 通过 匹配下一个状态 进入的
-            if( epsilonSet.contains(stateIndex) ) {
-                // 当前状态如果可以通过空转移进入，则就不应该消耗输入字符
-                return false;
+
+            state = new ArrayList<>();
+            repeatSet = new HashSet<>();
+            epsilonSet = new HashSet<>();
+
+            // 构建NFA
+            int index = -1;
+            for(char ch : p.toCharArray()) {
+                if( (ch>='a' && ch<='z') || ch=='.' ) {
+                    state.add(ch);
+                    index++;
+                } else if( ch=='*' ) {
+                    // * 前面的字符可以重复
+                    repeatSet.add( index );
+                    // 从 state[index-1]状态 到 state[index]状态 为 空转移
+                    epsilonSet.add( index);
+                }
             }
-            if( chars[charsIndex]!=state.get(stateIndex) && state.get(stateIndex)!='.' ) {
-                // 当前状态与指定字符 不匹配
-                return false;
-            }
-        } else if( opsType==3 ) {   // 通过 重复匹配当前状态 进入的
-            if( !repeatSet.contains(stateIndex) ) {
-                // 当前状态不可重复进入
-                return false;
-            }
-            if( chars[charsIndex]!=state.get(stateIndex) && state.get(stateIndex)!='.' ) {
-                // 当前状态与指定字符 不匹配
-                return false;
-            }
+
+            boolean res = dfs(s.toCharArray(), -1, -1,0);
+            return res;
         }
 
-        return dfs(chars, charsIndex, stateIndex+1, 1)                 // 空转移
-            || dfs(chars, charsIndex+1, stateIndex+1, 2)   // 匹配下一个状态
-            || dfs(chars, charsIndex+1, stateIndex, 3);               // 重复匹配当前状态
+        private boolean dfs(char[] chars, int charsIndex, int stateIndex, int opsType) {
+            // 字符串已经遍历完毕 且 NFA状态已经全部遍历完毕, 则说明正则匹配成功
+            if( charsIndex > chars.length-1 && stateIndex > state.size()-1 ) {
+                return true;
+            }
+
+            // 字符串已经遍历完毕 或 NFA状态已经全部遍历完毕, 则说明正则匹配失败
+            if( charsIndex > chars.length-1 || stateIndex > state.size()-1 ) {
+                return false;
+            }
+
+            // 通过 空转移 进入的
+            if( opsType==1 ) {
+                if( !epsilonSet.contains(stateIndex) ) {
+                    // 当前状态不可通过空转移进入
+                    return false;
+                }
+            } else if ( opsType==2 ) { // 通过 匹配下一个状态 进入的
+                if( epsilonSet.contains(stateIndex) ) {
+                    // 当前状态如果可以通过空转移进入，则就不应该消耗输入字符
+                    return false;
+                }
+                if( chars[charsIndex]!=state.get(stateIndex) && state.get(stateIndex)!='.' ) {
+                    // 当前状态与指定字符 不匹配
+                    return false;
+                }
+            } else if( opsType==3 ) {   // 通过 重复匹配当前状态 进入的
+                if( !repeatSet.contains(stateIndex) ) {
+                    // 当前状态不可重复进入
+                    return false;
+                }
+                if( chars[charsIndex]!=state.get(stateIndex) && state.get(stateIndex)!='.' ) {
+                    // 当前状态与指定字符 不匹配
+                    return false;
+                }
+            }
+
+            return dfs(chars, charsIndex, stateIndex+1, 1)                 // 空转移
+                || dfs(chars, charsIndex+1, stateIndex+1, 2)   // 匹配下一个状态
+                || dfs(chars, charsIndex+1, stateIndex, 3);               // 重复匹配当前状态
+        }
     }
 }
