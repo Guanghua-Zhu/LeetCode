@@ -47,7 +47,6 @@ package com.aaron.Leetcode;
 // Related Topics 设计 字典树 哈希表 字符串 
 // 👍 1063 👎 0
 
-
 /**
  * 208, 实现 Trie (前缀树)
  * @author Aaron Zhu
@@ -56,121 +55,122 @@ package com.aaron.Leetcode;
 public class ImplementTriePrefixTree_208{
     public static void main(String[] args) {
     }
-}
-
-/**
- * Trie字典树
- */
-class Trie {
-    /**
-     * 字典树的根节点
-     */
-    private TrieNode root;
-
-    public Trie() {
-        root = new TrieNode();
-    }
 
     /**
-     * 字典树中插入字符串 word
-     * @param word
+     * Trie字典树
      */
-    public void insert(String word) {
-        TrieNode current = root;
-        char[] chars = word.toCharArray();
-        for (int i=0; i<chars.length; i++) {
-            char ch = chars[i];
-            int index = calcIndex(ch);
-            TrieNode[] childs = current.getChilds();
-            if( childs[index]==null ) {
-                childs[index] = new TrieNode();
-            }
-            current = childs[index];
-        }
-        current.setEndFlag( true );
-    }
-
-    /**
-     * 判断字符串是否存在于字典树
-     * @param word
-     * @return
-     */
-    public boolean search(String word) {
-        TrieNode current = root;
-        char[] chars = word.toCharArray();
-        for(int i=0; i<chars.length; i++) {
-            char ch = chars[i];
-            int index = calcIndex(ch);
-            TrieNode[] childs = current.getChilds();
-            if( childs[index]==null ) {
-                return false;
-            }
-            current = childs[index];
-        }
-
-        return current.isEndFlag();
-    }
-
-    /**
-     * 判断前缀是否存在于字典树中
-     * @param prefix
-     * @return
-     */
-    public boolean startsWith(String prefix) {
-        TrieNode current = root;
-        char[] chars = prefix.toCharArray();
-        for(int i=0; i<chars.length; i++) {
-            char ch = chars[i];
-            int index = calcIndex(ch);
-            TrieNode[] childs = current.getChilds();
-            if( childs[index] == null ) {
-                return false;
-            }
-            current = childs[index];
-        }
-
-        return true;
-    }
-
-    /**
-     * 根据字符计算索引
-     * 0～25索引 对应于 a～z 字符
-     * @param ch
-     * @return
-     */
-    private static int calcIndex(char ch) {
-        return ch - 'a';
-    }
-
-    /**
-     * Trie字典树节点
-     */
-    public static class TrieNode {
+    public static class Trie {
         /**
-         * 子节点数组, 0～25索引 对应于 a～z 字符
+         * 字典树的根节点
          */
-        private TrieNode[] childs;
+        private TrieNode root;
+
+        public Trie() {
+            root = new TrieNode();
+        }
 
         /**
-         * 当前字符是否为字符串的最后一个字符
+         * 字典树中插入字符串 word
+         * @param word
          */
-        private boolean endFlag;
-
-        public TrieNode() {
-            childs = new TrieNode[26];
-            endFlag = false;
+        public void insert(String word) {
+            TrieNode current = root;
+            char[] chars = word.toCharArray();
+            for (int i=0; i<chars.length; i++) {
+                char ch = chars[i];
+                int index = calcIndex(ch);
+                TrieNode[] childs = current.getChilds();
+                if( childs[index]==null ) {
+                    childs[index] = new TrieNode();
+                }
+                current = childs[index];
+            }
+            current.setEndFlag( true );
         }
 
-        public TrieNode[] getChilds() {
-            return childs;
+        /**
+         * 判断字符串是否存在于字典树
+         * @param word
+         * @return
+         */
+        public boolean search(String word) {
+            TrieNode current = root;
+            char[] chars = word.toCharArray();
+            for(int i=0; i<chars.length; i++) {
+                char ch = chars[i];
+                int index = calcIndex(ch);
+                TrieNode[] childs = current.getChilds();
+                if( childs[index]==null ) {
+                    return false;
+                }
+                current = childs[index];
+            }
+
+            return current.isEndFlag();
         }
 
-        public boolean isEndFlag() {
-            return endFlag;
+        /**
+         * 判断前缀是否存在于字典树中
+         * @param prefix
+         * @return
+         */
+        public boolean startsWith(String prefix) {
+            TrieNode current = root;
+            char[] chars = prefix.toCharArray();
+            for(int i=0; i<chars.length; i++) {
+                char ch = chars[i];
+                int index = calcIndex(ch);
+                TrieNode[] childs = current.getChilds();
+                if( childs[index] == null ) {
+                    return false;
+                }
+                current = childs[index];
+            }
+
+            return true;
         }
 
-        public void setEndFlag(boolean endFlag) {
-            this.endFlag = endFlag;
+        /**
+         * 根据字符计算索引
+         * 0～25索引 对应于 a～z 字符
+         * @param ch
+         * @return
+         */
+        private static int calcIndex(char ch) {
+            return ch - 'a';
+        }
+
+        /**
+         * Trie字典树节点
+         */
+        public static class TrieNode {
+            /**
+             * 子节点数组, 0～25索引 对应于 a～z 字符
+             */
+            private TrieNode[] childs;
+
+            /**
+             * 当前字符是否为字符串的最后一个字符
+             */
+            private boolean endFlag;
+
+            public TrieNode() {
+                childs = new TrieNode[26];
+                endFlag = false;
+            }
+
+            public TrieNode[] getChilds() {
+                return childs;
+            }
+
+            public boolean isEndFlag() {
+                return endFlag;
+            }
+
+            public void setEndFlag(boolean endFlag) {
+                this.endFlag = endFlag;
+            }
         }
     }
 }
+
