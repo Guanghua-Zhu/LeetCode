@@ -75,12 +75,14 @@ public class UF2 {
      * @return
      * @apiNote 路径压缩: 完全路径压缩(迭代版本)
      */
-/*    public int find(int p) {
+/*
+    public int find(int p) {
         if( p != parent[p] ) {
             parent[p] = find( parent[p] );
         }
         return parent[p];
-    }*/
+    }
+*/
 
     /**
      * 获取p节点所在连通分量的标识
@@ -88,7 +90,8 @@ public class UF2 {
      * @return
      * @apiNote 路径压缩: 完全路径压缩(循环版本)
      */
-/*    public int find(int p) {
+/*
+    public int find(int p) {
         // 1. 找到根节点Root
         int root = p;
         while(root!=parent[root]) {
@@ -106,7 +109,8 @@ public class UF2 {
         }
 
         return root;
-    }*/
+    }
+*/
 
     /**
      * 建立p节点、q节点之间的连接
