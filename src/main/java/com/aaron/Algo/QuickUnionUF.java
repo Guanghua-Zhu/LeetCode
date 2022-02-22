@@ -73,7 +73,7 @@ public class QuickUnionUF {
         }
         // 将 p节点的根节点 指向 q节点的根节点
         parent[pRoot] = qRoot;
-        // 连通分量的数量减一
+        // 连通分量的数量减1
         count--;
     }
 }

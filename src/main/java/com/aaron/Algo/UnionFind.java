@@ -74,7 +74,7 @@ public class UnionFind {
                 id[i] = qId;
             }
         }
-        // 连通分量的数量减一
+        // 连通分量的数量减1
         count--;
     }
 }

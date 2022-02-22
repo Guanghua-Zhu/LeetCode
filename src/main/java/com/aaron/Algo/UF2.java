@@ -134,7 +134,7 @@ public class UF2 {
             parent[qRoot] = pRoot;
             rank[pRoot] += rank[qRoot];
         }
-        // 连通分量的数量减一
+        // 连通分量的数量减1
         count--;
     }
 
