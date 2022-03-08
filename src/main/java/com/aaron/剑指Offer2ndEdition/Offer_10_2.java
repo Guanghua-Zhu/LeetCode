@@ -34,6 +34,8 @@ package com.aaron.剑指Offer2ndEdition;
 // 👍 234 👎 0
 
 
+import java.util.Arrays;
+
 /**
  * 剑指offer·第二版: 10-II, 青蛙跳台阶问题
  * @author Aaron Zhu
@@ -62,5 +64,53 @@ public class Offer_10_2{
             return num1;
         }
     }
+
+    /**
+     * DP动态规划
+     */
+    public static class Solution2 {
+        public int numWays(int n) {
+            int[] dp = new int[n+2];
+            dp[n] = 1;
+            dp[n+1] = 0;
+            for(int pos=n-1; pos>=0; pos--) {
+                int ways = dp[pos+1] + dp[pos+2];
+                ways = ways % 1000000007;
+                dp[pos] = ways;
+            }
+            return dp[0];
+        }
+    }
+
+    /**
+     * 暴力递归+记忆化
+     */
+    public static class Solution1 {
+        public int numWays(int n) {
+            int[] cache = new int[n+2];
+            Arrays.fill(cache, -1);
+            return way(n, 0, cache);
+        }
+
+        private int way(int n, int pos, int[] cache) {
+            if( cache[pos] != -1 ) {
+                return cache[pos];
+            }
+
+            if( pos==n ) {
+                cache[pos] = 1;
+                return cache[pos];
+            } else if( pos>n ) {
+                cache[pos] = 0;
+                return cache[pos];
+            }
+
+            int ways = way(n, pos+1, cache) + way(n ,pos+2, cache);
+            ways = ways % 1000000007;
+            cache[pos] = ways;
+            return cache[pos];
+        }
+    }
+
 }
 

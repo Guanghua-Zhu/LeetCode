@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.剑指Offer2ndEdition;
 
 import java.util.*;
 
@@ -45,32 +45,34 @@ public class Offer_43 {
         solution.countDigitOne(12);
         System.out.println("ggg");
     }
-}
 
-class Solution {
-    public int countDigitOne(int n) {
-        int res = 0;
+    public static class Solution {
+        public int countDigitOne(int n) {
+            int res = 0;
 
-        int high = n / 10;
-        int current = n % 10;
-        int low = 0;
-        int digit = 1;
+            int high = n / 10;
+            int current = n % 10;
+            int low = 0;
+            int digit = 1;
 
-        while (high!=0 || current !=0) {
-            if ( current==0 ) {
-                res += digit * high;
-            } else if (current==1) {
-                res += digit * high + 1 + low;
-            } else {
-                res += digit * (high+1);
+            while (high!=0 || current !=0) {
+                if ( current==0 ) {
+                    res += digit * high;
+                } else if (current==1) {
+                    res += digit * high + 1 + low;
+                } else {
+                    res += digit * (high+1);
+                }
+
+                low = low + current * digit;
+                current = high % 10;
+                high = high / 10;
+                digit = digit * 10;
             }
 
-            low = low + current * digit;
-            current = high % 10;
-            high = high / 10;
-            digit = digit * 10;
+            return res;
         }
-
-        return res;
     }
 }
+
+
