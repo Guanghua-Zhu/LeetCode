@@ -40,26 +40,51 @@ import java.util.*;
  * @date 2022-3-7
  */
 public class OneNzhengShuZhong1chuXianDeCiShuLcof_剑指 Offer 43{
-    
+//public class  Offer {
+
     public static void main(String[] args) {
         Solution solution = new Solution();
+        solution.countDigitOne(12);
+        System.out.println("ggg");
     }
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int countDigitOne(int n) {
-        byte[] dp = new byte[n+1];
+        int max = (int)(Math.log10(n) / 2 + 1);
+        int dpSize = (int) Math.pow(10, max);
+
+
+        byte[] dp = new byte[dpSize];
         int res = 0;
         for(int num=1; num<=n; num++) {
-            int singleDigit = num%10;
-            byte temp = (byte)(singleDigit==1 ? 1 : 0);
-            temp += dp[num/10];
-            dp[num] = temp;
+            byte temp = 0;
+            if(num<10) {
+                int singleDigit = num%10;
+                temp = (byte)(singleDigit==1 ? 1 : 0);
+                temp += dp[num/10];
+            } else {
+                int[] subNum = split(num);
+                temp =(byte)(dp[subNum[0]] + dp[subNum[1]]) ;
+            }
 
-            res += dp[num];
+            if( num<dpSize ) {
+                dp[num] = temp;
+            }
+
+            res += temp;
         }
         return res;
+    }
+
+    private int[] split(int num) {
+        String str = String.valueOf(num);
+        int index = str.length()/2;
+        int div = (int) Math.pow(10,index);
+        int num1 = num / div;
+        int num2 = num % div;
+        return new int[]{num1, num2};
     }
 
     private byte calc(int num, byte[] cache) {
