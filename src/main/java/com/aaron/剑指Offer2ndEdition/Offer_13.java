@@ -170,4 +170,51 @@ public class Offer_13{
 
     }
 
+    public static class Solution2 {
+        public int movingCount(int m, int n, int k) {
+            int res = 1;
+            boolean[][] access = new boolean[m][n];
+            access[0][0] = true;
+            for (int i=0; i<m; i++) {
+                for (int j=0; j<n; j++) {
+                    if( (i==0&&j==0) || calcSum(i,j)>k ) {
+                        continue;
+                    }
+
+                    if( i-1>=0 ) {
+                        access[i][j] = access[i][j] || access[i-1][j];
+                    }
+                    if( j-1>=0 ) {
+                        access[i][j] = access[i][j] || access[i][j-1];
+                    }
+
+                    if( access[i][j] ) {
+                        res++;
+                    }
+                }
+            }
+
+            return res;
+        }
+
+        /**
+         * 计算两个数的数位之和
+         * @param num1
+         * @param num2
+         * @return
+         */
+        private int calcSum(int num1, int num2) {
+            int sum = 0;
+            while( num1!=0 ) {
+                sum += num1 % 10;
+                num1 = num1 / 10;
+            }
+            while( num2!=0 ) {
+                sum += num2 % 10;
+                num2 = num2 / 10;
+            }
+            return sum;
+        }
+    }
+
 }
