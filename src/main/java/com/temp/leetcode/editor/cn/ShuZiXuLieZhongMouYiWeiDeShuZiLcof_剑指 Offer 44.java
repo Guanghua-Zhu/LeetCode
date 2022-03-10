@@ -50,19 +50,23 @@ class Solution {
     /**
      * Key: 索引范围最大值; Value: 该索引范围是几位数
      */
-    private static Map<Integer, Integer> map;
+    private static Map<Long, Integer> map;
 
     static {
         long sum = 0;
-        int lastStartIndex = 0;
+        long maxIndex = 0;
+        long lastMaxIndex=0;
         map = new LinkedHashMap<>();
 
         for(int i=1; ;i++) {
             if( i==1 ) {
-                map.put(9,1);
-                lastStartIndex = 9;
+                map.put((long)9,1);
+                lastMaxIndex = 9;
                 sum = 10;
             } else {
+                maxIndex = lastMaxIndex + (long)(Math.pow(10, i-1)*9*i);
+                map.put(maxIndex, i);
+                lastMaxIndex = maxIndex;
 
             }
         }
