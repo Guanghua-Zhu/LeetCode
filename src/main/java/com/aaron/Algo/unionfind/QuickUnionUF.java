@@ -1,4 +1,4 @@
-package com.aaron.Algo;
+package com.aaron.Algo.unionfind;
 
 /**
  * Quick Union版本的并查集

@@ -1,4 +1,4 @@
-package com.aaron.Algo;
+package com.aaron.Algo.unionfind;
 
 /**
  * 并查集
