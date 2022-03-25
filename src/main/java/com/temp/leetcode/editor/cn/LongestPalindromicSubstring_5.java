@@ -46,9 +46,51 @@ public class LongestPalindromicSubstring_5{
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
+/**
+ * DP动态规划
+ */
 class Solution {
     public String longestPalindrome(String s) {
+        if(s.length() == 1) {
+            return s;
+        }
 
+        int maxLen = 1;
+        int startIndex = 0;
+
+        char[] chars = s.toCharArray();
+        int size = chars.length;
+        boolean[][] dp = new boolean[size][size];
+        for(int i=0; i<size; i++) {
+            dp[i][i] = true;
+        }
+
+        for(int len=2; len<=size; len++) {
+            for (int i=0; i<size; i++) {
+                int j = i+len-1;
+                if( j>=size ) {
+                    break;
+                }
+
+                if( chars[i] != chars[j] ) {
+                    dp[i][j] = false;
+                } else {
+                    if( j-i<3 ) {
+                        dp[i][j] = true;
+                    } else {
+                        dp[i][j] = dp[i+1][j-1];
+                    }
+                }
+
+                if( dp[i][j] && j-i+1>maxLen ) {
+                    maxLen = j-i+1;
+                    startIndex = i;
+                }
+            }
+        }
+
+        return s.substring(startIndex, startIndex+maxLen);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
