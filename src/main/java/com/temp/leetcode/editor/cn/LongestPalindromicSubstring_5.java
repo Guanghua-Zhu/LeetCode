@@ -45,40 +45,10 @@ public class LongestPalindromicSubstring_5{
     }
 }
 
-//leetcode submit region begin(Prohibit modification and deletion)
-
-class Solution {
-    public String longestPalindrome(String s) {
-        if(s.length() == 1) {
-            return s;
-        }
-
-        int start = 0;
-        int end = 0;
-        char[] chars = s.toCharArray();
-        for(int i=0; i<chars.length; i++) {
-            int len1 = expand(chars, i, i);
-            int len2 = expand(chars, i, i+1);
-            int
-        }
-
-
-    }
-
-    private int expand(char[] chars, int left, int right) {
-
-
-    }
-
-
-}
-
-//leetcode submit region end(Prohibit modification and deletion)
-
 /**
  * DP动态规划
  */
-class Solution1 {
+class Solution {
     public String longestPalindrome(String s) {
         if(s.length() == 1) {
             return s;
@@ -119,5 +89,40 @@ class Solution1 {
         }
 
         return s.substring(startIndex, startIndex+maxLen);
+    }
+}
+
+/**
+ * 中心扩展法
+ */
+class Solution2 {
+    public String longestPalindrome(String s) {
+        if(s.length() == 1) {
+            return s;
+        }
+
+        int start = 0;
+        int end = 0;
+        char[] chars = s.toCharArray();
+        for(int i=0; i<chars.length; i++) {
+            int len1 = expand(chars, i, i);
+            int len2 = expand(chars, i, i+1);
+            int len = Math.max(len1, len2);
+            if( len > end-start ) {
+                start = i - (len-1)/2;
+                end = i + len/2;
+            }
+        }
+
+        return s.substring(start, end+1);
+    }
+
+    private int expand(char[] chars, int left, int right) {
+        while ( left>=0 && right<=chars.length-1 && chars[left]==chars[right] ) {
+            left--;
+            right++;
+        }
+
+        return right - left - 1;
     }
 }
