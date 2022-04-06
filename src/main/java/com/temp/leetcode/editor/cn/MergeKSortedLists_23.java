@@ -70,16 +70,29 @@ class Solution {
             return null;
         }
 
-        int mergeCount = (int)Math.ceil( Math.log( lists.length ) / Math.log(2) );
+        List<ListNode> allList = new ArrayList<>( Arrays.asList(lists) );
 
-        for(int i=0; i<mergeCount; i++) {
+        while ( allList.size()>1 ) {
+            List<ListNode> tempList = new ArrayList<>();
 
+            int listCount = allList.size();
+            for(int j=0; j<listCount; j=j+2) {
+                ListNode resultList = null;
+                if( j+1>=listCount ) {
+                    resultList = allList.get(j);
+                } else {
+                    resultList = merge( allList.get(j), allList.get(j+1) );
+                }
 
+                if( resultList!=null ) {
+                    tempList.add( resultList );
+                }
+            }
+
+            allList = tempList;
         }
 
-
-
-
+        return allList.get(0);
     }
 
     private ListNode merge(ListNode l1, ListNode l2) {
@@ -115,6 +128,9 @@ class Solution {
 
 }
 
+//leetcode submit region end(Prohibit modification and deletion)
+
+
 class ListNode {
     int val;
     ListNode next;
@@ -122,4 +138,3 @@ class ListNode {
     ListNode(int val) { this.val = val; }
     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
 }
-//leetcode submit region end(Prohibit modification and deletion)
