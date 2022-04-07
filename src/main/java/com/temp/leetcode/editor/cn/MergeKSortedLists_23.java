@@ -59,16 +59,132 @@ public class MergeKSortedLists_23{
     
     public static void main(String[] args) {
         Solution solution = new Solution();
+        ListNode list1 = new ListNode(-2);
+        list1.next = new ListNode(-1);
+        list1.next.next = new ListNode(-1);
+        list1.next.next.next = new ListNode(-1);
+
+        ListNode[] lists = new ListNode[]{list1, null};
+        solution.mergeKLists(lists);
+        System.out.println("gg");
     }
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
+/**
+ * 堆排序:
+ */
 class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+
+        Queue<ListNode> queue = new PriorityQueue<>(Comparator.comparingInt(o -> o.val));
+        for (ListNode listNode : lists) {
+            if( listNode!=null ) {
+                queue.add( listNode );
+            }
+        }
+
+
+        ListNode head = new ListNode();
+        ListNode current = head;
+        while (!queue.isEmpty()) {
+            ListNode listNode = queue.poll();
+
+
+
+
+            current.next = listNode;
+            current = current.next;
+        }
+
+
+
+
+        for (ListNode listNode : lists) {
+            ListNode current = listNode;
+            while (current != null) {
+                queue.add(current);
+
+                // 移除节点的后继指针, 防止成环
+                ListNode temp = current.next;
+                current.next = null;
+                current = temp;
+            }
+        }
+
+        ListNode head = new ListNode();
+        ListNode current = head;
+        while (!queue.isEmpty()) {
+            ListNode listNode = queue.poll();
+            current.next = listNode;
+            current = current.next;
+        }
+
+        return head.next;
+    }
+}
+
+//leetcode submit region end(Prohibit modification and deletion)
+
+
+/**
+ * 堆排序: 暴力法
+ */
+class Solution2 {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+
+        Queue<ListNode> queue = new PriorityQueue<>(Comparator.comparingInt(o -> o.val));
+        for (ListNode listNode : lists) {
+            ListNode current = listNode;
+            while (current != null) {
+                queue.add(current);
+
+                // 移除节点的后继指针, 防止成环
+                ListNode temp = current.next;
+                current.next = null;
+                current = temp;
+            }
+        }
+
+        ListNode head = new ListNode();
+        ListNode current = head;
+        while (!queue.isEmpty()) {
+            ListNode listNode = queue.poll();
+            current.next = listNode;
+            current = current.next;
+        }
+
+        return head.next;
+    }
+}
+
+/**
+ * 归并排序
+ */
+class Solution1 {
     public ListNode mergeKLists(ListNode[] lists) {
         if( lists==null || lists.length==0 ) {
             return null;
         }
+
+        boolean allNull = true;
+        for(ListNode listNode : lists) {
+            if( listNode!=null ) {
+                allNull = false;
+                break;
+            }
+        }
+        if( allNull ) {
+            return null;
+        }
+
 
         List<ListNode> allList = new ArrayList<>( Arrays.asList(lists) );
 
@@ -106,7 +222,7 @@ class Solution {
 
         ListNode head = new ListNode();
         ListNode current = head;
-        while ( l1!=null && l2!=null ) {
+        while ( l1!=null || l2!=null ) {
             if( l1==null ) {
                 current.next = l2;
                 l2 = l2.next;
@@ -127,9 +243,6 @@ class Solution {
     }
 
 }
-
-//leetcode submit region end(Prohibit modification and deletion)
-
 
 class ListNode {
     int val;
