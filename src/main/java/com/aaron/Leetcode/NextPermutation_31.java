@@ -72,7 +72,7 @@ public class NextPermutation_31{
                 return;
             }
 
-            // 找第一个降序对
+            // 找第一个升序对
             int i = nums.length-2;
             int j = nums.length-1;
             while ( i>=0 && nums[i]>=nums[j]) {
@@ -80,7 +80,7 @@ public class NextPermutation_31{
                 j--;
             }
 
-            // 找到第一个降序对
+            // 找到第一个升序对
             if( i>=0 ) {
                 int k = nums.length-1;
                 while (nums[k]<=nums[i]) {
@@ -92,7 +92,7 @@ public class NextPermutation_31{
                 nums[k] = temp;
             }
 
-            // 如果未找到降序对, 则此时i为-1、j为0
+            // 如果未找到升序对, 则此时i为-1、j为0
             for(int l=j,r=nums.length-1; l<r; l++,r--) {
                 int temp = nums[l];
                 nums[l] = nums[r];
