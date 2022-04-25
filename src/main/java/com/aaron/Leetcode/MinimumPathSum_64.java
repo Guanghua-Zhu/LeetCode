@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.awt.*;
 import java.util.*;
@@ -48,32 +48,35 @@ public class MinimumPathSum_64{
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int minPathSum(int[][] grid) {
-        if(grid.length==1 && grid[0].length==1) {
-            return grid[0][0];
-        }
-
-        int m = grid.length;
-        int n = grid[0].length;
-        int[] last = null;
-
-        for(int i=0; i<m; i++) {
-            int[] now = new int[n];
-            for (int j=0; j<n; j++) {
-                if( i==0 ) {
-                    now[j] = j-1<0 ? grid[i][j] : grid[i][j] + now[j-1];
-                } else {
-                    now[j] = j-1<0 ? grid[i][j] + last[j] : grid[i][j] + Math.min(now[j-1], last[j]);
-                }
+    /**
+     * DP动态规划
+     */
+    public static class Solution {
+        public int minPathSum(int[][] grid) {
+            if(grid.length==1 && grid[0].length==1) {
+                return grid[0][0];
             }
-            last = now;
-        }
 
-        return last[n];
+            int m = grid.length;
+            int n = grid[0].length;
+            int[] last = null;
+
+            for(int i=0; i<m; i++) {
+                int[] now = new int[n];
+                for (int j=0; j<n; j++) {
+                    if( i==0 ) {
+                        now[j] = j-1<0 ? grid[i][j] : grid[i][j] + now[j-1];
+                    } else {
+                        now[j] = j-1<0 ? grid[i][j] + last[j] : grid[i][j] + Math.min(now[j-1], last[j]);
+                    }
+                }
+                last = now;
+            }
+
+            return last[n-1];
+        }
     }
+
 }
-//leetcode submit region end(Prohibit modification and deletion)
+
