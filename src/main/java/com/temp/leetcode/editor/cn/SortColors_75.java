@@ -63,9 +63,64 @@ public class SortColors_75{
 //leetcode submit region begin(Prohibit modification and deletion)
 
 /**
- * 计数排序
+ * 双指针-方式1
  */
 class Solution {
+    public void sortColors(int[] nums) {
+        int p0 = 0;
+        int p1 = 0;
+        for(int i=0; i<nums.length; i++) {
+            if( nums[i]==1) {
+                swap(nums, i, p1);
+                p1++;
+            } else if( nums[i]==0 ) {
+                swap(nums, i, p0);
+                if( p0<p1 ) {
+                    swap(nums, i, p1);
+                }
+                p0++;
+                p1++;
+            }
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+class Solution3 {
+    public void sortColors(int[] nums) {
+        int p = 0;
+        // 先把0交换到指针p所指示的位置处
+        for(int i=0; i<nums.length; i++) {
+            if( nums[i]==0 ) {
+                int temp = nums[i];
+                nums[i] = nums[p];
+                nums[p] = temp;
+                p++;
+            }
+        }
+
+        // 再把1交换到指针p所指示的位置处
+        for(int i=p; i<nums.length; i++) {
+            if( nums[i]==1 ) {
+                int temp = nums[i];
+                nums[i] = nums[p];
+                nums[p] = temp;
+                p++;
+            }
+        }
+    }
+}
+
+/**
+ * 计数排序
+ */
+class Solution2 {
     public void sortColors(int[] nums) {
         int num0 = 0;
         int num1 = 0;
@@ -94,7 +149,6 @@ class Solution {
         }
     }
 }
-//leetcode submit region end(Prohibit modification and deletion)
 
 /**
  * 冒泡排序
