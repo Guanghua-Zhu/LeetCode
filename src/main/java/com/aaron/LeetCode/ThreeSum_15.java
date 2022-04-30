@@ -1,7 +1,6 @@
-package com.aaron.Leetcode;
+package com.aaron.LeetCode;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 //给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重
 //复的三元组。 

@@ -1,8 +1,6 @@
-package com.aaron.Leetcode;
+package com.aaron.LeetCode;
 
-import java.util.*;
-
-//不使用任何库函数，设计一个 跳表 。 
+//不使用任何库函数，设计一个 跳表 。
 //
 // 跳表 是在 O(log(n)) 时间内完成增加、删除、搜索操作的数据结构。跳表相比于树堆与红黑树，其功能与性能相当，并且跳表的代码长度相较下更短，其设计思
 //想与链表相似。 
