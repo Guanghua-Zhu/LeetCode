@@ -66,37 +66,37 @@ public class EditDistance_72{
      */
     public static class Solution {
         public int minDistance(String word1, String word2) {
-            if( word1.length()==0 && word2.length()==0 ) {
-                return 0;
-            } else if ( word1.length()==0 ) {
-                return word2.length();
-            } else if( word2.length()==0 ) {
-                return word1.length();
-            }
-
             int m = word1.length();
             int n = word2.length();
-            int[][] dp = new int[m+1][n+1];
-
-            for (int i=0; i<m+1; i++) {
-                dp[i][0] = i;
+            if( m*n == 0 ) {
+                return Math.max(m, n);
             }
 
+            int[][] lev = new int[m+1][n+1];
+
+            // 字符串word1从空串 变为 字符串word2 前j个字符 的莱文斯坦距离
             for (int j=0; j<n+1; j++) {
-                dp[0][j] = j;
+                lev[0][j] = j;
+            }
+            // 字符串word1从前i个字符 变为 空串 的莱文斯坦距离
+            for (int i=0; i<m+1; i++) {
+                lev[i][0] = i;
             }
 
             for (int i=1; i<m+1; i++) {
                 for (int j=1; j<n+1; j++) {
-                    if( word1.charAt(i-1) == word2.charAt(j-1) ) {
-                        dp[i][j] = dp[i-1][j-1];
-                    } else {
-                        dp[i][j] = min( dp[i-1][j], dp[i][j-1], dp[i-1][j-1] ) +1;
-                    }
+                    // 在 字符串A的前i个字符 与 字符串B的前j-1个字符 完全相同的基础上, 进行一次插入操作
+                    int countByInsert = lev[i][j-1] + 1;
+                    // 在 字符串A的前i-1个字符 与 字符串B的前j个字符 完全相同的基础上, 进行一次删除操作
+                    int countByDel = lev[i-1][j] + 1;
+                    // 在 字符串A的前i-1个字符 与 字符串B的前j-1个字符 完全相同的基础上, 进行一次替换操作
+                    int countByReplace =  word1.charAt(i-1)==word2.charAt(j-1) ? lev[i-1][j-1] : lev[i-1][j-1]+1;
+                    // 计算 字符串A的前i个字符 与 字符串B的前j个字符 的莱文斯坦距离
+                    lev[i][j] = min( countByInsert, countByDel, countByReplace );
                 }
             }
 
-            return dp[m][n];
+            return lev[m][n];
         }
 
         private int min(int a, int b, int c) {
@@ -105,5 +105,4 @@ public class EditDistance_72{
             return res;
         }
     }
-
 }
