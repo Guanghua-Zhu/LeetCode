@@ -55,29 +55,43 @@ public class LargestRectangleInHistogram_84{
 class Solution {
     public int largestRectangleArea(int[] heights) {
         int maxArea = 0;
-        for(int i=0; i<heights.length; i++) {
-            int cur = heights[i];
+        int size = heights.length;
+        int[] leftBoard = new int[size];
+        int[] rightBoard = new int[size];
 
-            int leftIndex = i;
-            while ( leftIndex >= 0 ) {
-                if( heights[leftIndex] < cur ) {
-                    break;
-                }
-                leftIndex--;
+        Deque<Integer> stack = new LinkedList<>();
+        // 计算左边界
+        for (int i=0; i<size; i++) {
+            int height = heights[i];
+            while ( !stack.isEmpty() && heights[stack.peekLast()] >= height ) {
+                stack.removeLast();
             }
-            leftIndex++;
 
-            int rightIndex = i;
-            while ( rightIndex < heights.length ) {
-                if( heights[rightIndex] < cur ) {
-                    break;
-                }
-                rightIndex++;
+            int board = stack.isEmpty() ? -1 : stack.peekLast();
+            leftBoard[i] = board;
+
+            stack.addLast(i);
+        }
+
+        stack.clear();
+        // 计算右边界
+        for (int i=size-1; i>=0; i--) {
+            int height = heights[i];
+            while ( !stack.isEmpty() && heights[stack.peekLast()] >= height ) {
+                stack.removeLast();
             }
-            rightIndex--;
 
-            int area = (rightIndex-leftIndex+1) * cur;
-            maxArea = Math.max(maxArea, area);
+            int board = stack.isEmpty() ? size : stack.peekLast();
+            rightBoard[i] = board;
+
+            stack.addLast(i);
+        }
+
+        for (int i=0; i<size; i++) {
+            int tempArea = (rightBoard[i]-leftBoard[i]-1) * heights[i];
+            if( tempArea > maxArea ) {
+                maxArea = tempArea;
+            }
         }
 
         return maxArea;
