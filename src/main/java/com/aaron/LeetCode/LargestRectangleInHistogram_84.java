@@ -61,29 +61,31 @@ public class LargestRectangleInHistogram_84{
             int[] rightBoard = new int[size];
 
             Deque<Integer> stack = new LinkedList<>();
+            stack.addLast( -1 );
             // 计算左边界
             for (int i=0; i<size; i++) {
                 int height = heights[i];
-                while ( !stack.isEmpty() && heights[stack.peekLast()] >= height ) {
+                while ( stack.peekLast()!=-1 && heights[stack.peekLast()] >= height ) {
                     stack.removeLast();
                 }
 
-                int board = stack.isEmpty() ? -1 : stack.peekLast();
-                leftBoard[i] = board;
+                //int board = stack.isEmpty() ? -1 : stack.peekLast();
+                leftBoard[i] = stack.peekLast();
 
                 stack.addLast(i);
             }
 
             stack.clear();
+            stack.addLast( size );
             // 计算右边界
             for (int i=size-1; i>=0; i--) {
                 int height = heights[i];
-                while ( !stack.isEmpty() && heights[stack.peekLast()] >= height ) {
+                while ( stack.peekLast()!=size && heights[stack.peekLast()] >= height ) {
                     stack.removeLast();
                 }
 
-                int board = stack.isEmpty() ? size : stack.peekLast();
-                rightBoard[i] = board;
+                // int board = stack.isEmpty() ? size : stack.peekLast();
+                rightBoard[i] = stack.peekLast();
 
                 stack.addLast(i);
             }
@@ -93,41 +95,6 @@ public class LargestRectangleInHistogram_84{
                 if( tempArea > maxArea ) {
                     maxArea = tempArea;
                 }
-            }
-
-            return maxArea;
-        }
-    }
-
-    /**
-     * 暴力法: 超时
-     */
-    public static class Solution1 {
-        public int largestRectangleArea(int[] heights) {
-            int maxArea = 0;
-            for(int i=0; i<heights.length; i++) {
-                int cur = heights[i];
-
-                int leftIndex = i;
-                while ( leftIndex >= 0 ) {
-                    if( heights[leftIndex] < cur ) {
-                        break;
-                    }
-                    leftIndex--;
-                }
-                leftIndex++;
-
-                int rightIndex = i;
-                while ( rightIndex < heights.length ) {
-                    if( heights[rightIndex] < cur ) {
-                        break;
-                    }
-                    rightIndex++;
-                }
-                rightIndex--;
-
-                int area = (rightIndex-leftIndex+1) * cur;
-                maxArea = Math.max(maxArea, area);
             }
 
             return maxArea;
