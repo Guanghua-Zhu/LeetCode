@@ -51,46 +51,51 @@ public class LargestRectangleInHistogram_84{
 
 
     /**
-     * 单调栈
+     * 单调递减栈
      */
     public static class Solution {
         public int largestRectangleArea(int[] heights) {
             int maxArea = 0;
             int size = heights.length;
+
+            // 当前元素 左侧第一个比它小的元素位置索引
             int[] leftBoard = new int[size];
+            // 当前元素 右侧第一个比它小的元素位置索引
             int[] rightBoard = new int[size];
 
+            // 单调递减栈
             Deque<Integer> stack = new LinkedList<>();
-            stack.addLast( -1 );
             // 计算左边界
             for (int i=0; i<size; i++) {
-                int height = heights[i];
-                while ( stack.peekLast()!=-1 && heights[stack.peekLast()] >= height ) {
-                    stack.removeLast();
+                // 当前元素
+                int current = heights[i];
+                // 如果栈顶所对应的元素 不小于 当前元素, 就一直弹栈
+                while ( !stack.isEmpty() && heights[stack.peek()] >= current ) {
+                    stack.pop();
                 }
-
-                //int board = stack.isEmpty() ? -1 : stack.peekLast();
-                leftBoard[i] = stack.peekLast();
-
-                stack.addLast(i);
+                // 此时栈顶的位置索引 即为 左侧第一个比当前元素小的元素位置索引
+                leftBoard[i] = stack.isEmpty() ? -1 : stack.peek();
+                // 当前元素的位置索引入栈
+                stack.push(i);
             }
 
             stack.clear();
-            stack.addLast( size );
             // 计算右边界
             for (int i=size-1; i>=0; i--) {
-                int height = heights[i];
-                while ( stack.peekLast()!=size && heights[stack.peekLast()] >= height ) {
-                    stack.removeLast();
+                // 当前元素
+                int current = heights[i];
+                // 如果栈顶所对应的元素 不小于 当前元素, 就一直弹栈
+                while ( !stack.isEmpty() && heights[stack.peek()] >= current ) {
+                    stack.pop();
                 }
-
-                // int board = stack.isEmpty() ? size : stack.peekLast();
-                rightBoard[i] = stack.peekLast();
-
-                stack.addLast(i);
+                // 此时栈顶的位置索引 即为 右侧第一个比当前元素小的元素位置索引
+                rightBoard[i] = stack.isEmpty() ? size : stack.peek();
+                // 当前元素的位置索引入栈
+                stack.push(i);
             }
 
             for (int i=0; i<size; i++) {
+                // 计算以当前元素为高度的矩形的面积
                 int tempArea = (rightBoard[i]-leftBoard[i]-1) * heights[i];
                 if( tempArea > maxArea ) {
                     maxArea = tempArea;
