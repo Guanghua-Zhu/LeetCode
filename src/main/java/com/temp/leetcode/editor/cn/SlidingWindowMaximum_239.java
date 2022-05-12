@@ -55,11 +55,39 @@ public class SlidingWindowMaximum_239{
     }
 }
 
-//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * 单调递减队列
+ */
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
+        int size = nums.length;
+        int[] res = new int[ size-k+1 ];
+        // 单调递减队列
+        Deque<Integer> queue = new LinkedList<>();
 
+        for (int i=0; i<size; i++) {
+            int current = nums[i];
+            // 对队尾进行出队操作直到满足单调性为止
+            while ( !queue.isEmpty() && nums[queue.peekLast()] < current ) {
+                queue.removeLast();
+            }
+
+            // 将当前元素从队尾入队
+            queue.addLast( i );
+
+            // 滑动窗口的区间范围: [i+1-k, i]
+            int leftIndex = i+1-k;
+            // 滑动窗口大小满足要求
+            if( leftIndex>=0 ) {
+                // 队头元素如果不存在于滑动窗口的区间当中, 则需要从队头进行出队
+                while ( !queue.isEmpty() && queue.peekFirst()<leftIndex ) {
+                    queue.removeFirst();
+                }
+                // 此时队头元素即为此滑动窗口区间的最大值
+                res[leftIndex] = nums[ queue.peekFirst() ];
+            }
+        }
+
+        return res;
     }
 }
-//leetcode submit region end(Prohibit modification and deletion)
-
