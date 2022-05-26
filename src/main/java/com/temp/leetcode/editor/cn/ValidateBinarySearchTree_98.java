@@ -53,12 +53,84 @@ public class ValidateBinarySearchTree_98{
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
 class Solution {
     public boolean isValidBST(TreeNode root) {
 
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+class Solution2 {
+    public boolean isValidBST(TreeNode root) {
+        boolean res = true;
+
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode cur = root;
+        Long lastVal = Long.MIN_VALUE;
+
+        while ( cur!=null || !stack.isEmpty() ) {
+            while ( cur!=null ) {
+                stack.push( cur );
+                cur  = cur.left;
+            }
+
+            cur = stack.poll();
+
+            Long currentVal = (long) cur.val;
+            if( lastVal >= currentVal ) {
+                res = false;
+                break;
+            }
+            lastVal = currentVal;
+
+            cur = cur.right;
+        }
+
+        return res;
+    }
+}
+
+/**
+ * 先(迭代)中序遍历 再比较
+ */
+class Solution1 {
+    public boolean isValidBST(TreeNode root) {
+        List<Integer> list = inorderTraversal(root);
+        boolean res = true;
+        for (int i=0; i<list.size()-1; i++) {
+            if( list.get(i) >= list.get(i+1) ) {
+                res = false;
+                break;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 基于迭代的中序遍历
+     * @param root
+     * @return
+     */
+    private List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode cur = root;
+
+        while ( cur!=null || !stack.isEmpty() ) {
+            while ( cur!=null ) {
+                stack.push( cur );
+                cur  = cur.left;
+            }
+
+            cur = stack.poll();
+            list.add( cur.val );
+            cur = cur.right;
+        }
+
+        return list;
+    }
+}
 
 class TreeNode {
     int val;
