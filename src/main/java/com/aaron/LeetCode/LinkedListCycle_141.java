@@ -71,9 +71,9 @@ public class LinkedListCycle_141{
      * Brent Algo
      */
     public static class Solution {
-        public boolean hasCycle(com.temp.leetcode.editor.cn.ListNode head) {
-            com.temp.leetcode.editor.cn.ListNode slow = head;
-            com.temp.leetcode.editor.cn.ListNode fast = slow;
+        public boolean hasCycle(ListNode head) {
+            ListNode slow = head;
+            ListNode fast = slow;
             // 快指针每轮过程中最多走几步
             int limit = 2;
             // 记录快指针在每轮过程中走的步数
@@ -105,9 +105,9 @@ public class LinkedListCycle_141{
      * Floyd Algo
      */
     public static class Solution1 {
-        public boolean hasCycle(com.temp.leetcode.editor.cn.ListNode head) {
-            com.temp.leetcode.editor.cn.ListNode slow = head;
-            com.temp.leetcode.editor.cn.ListNode fast = slow;
+        public boolean hasCycle(ListNode head) {
+            ListNode slow = head;
+            ListNode fast = slow;
             while ( fast!=null && fast.next!=null ) {
                 slow = slow.next;
                 fast = fast.next.next;
@@ -121,7 +121,7 @@ public class LinkedListCycle_141{
 
     public static class ListNode {
         int val;
-        com.temp.leetcode.editor.cn.ListNode next;
+        ListNode next;
         ListNode(int x) {
             val = x;
             next = null;
