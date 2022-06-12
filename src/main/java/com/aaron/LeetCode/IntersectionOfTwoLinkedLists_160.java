@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -97,24 +97,43 @@ public class IntersectionOfTwoLinkedLists_160{
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
- *     }
- * }
- */
-public class Solution {
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        
+    public static class Solution {
+        public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+            if ( headA==null && headB==null ) {
+                return null;
+            } else if( headA==null || headB==null ) {
+                return null;
+            }
+
+            ListNode nodeA = headA;
+            ListNode nodeB = headB;
+
+            while ( nodeA!=nodeB ) {
+                if( nodeA!=null ) {
+                    nodeA = nodeA.next;
+                } else {
+                    nodeA = headB;
+                }
+
+                if( nodeB!=null ) {
+                    nodeB = nodeB.next;
+                } else {
+                    nodeB = headA;
+                }
+            }
+
+            return nodeA;
+        }
     }
-}
-//leetcode submit region end(Prohibit modification and deletion)
 
+    public static class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) {
+            val = x;
+            next = null;
+        }
+    }
+
+}
