@@ -52,8 +52,27 @@ public class BinaryTreeMaximumPathSum_124{
 //leetcode submit region begin(Prohibit modification and deletion)
 
 class Solution {
-    public int maxPathSum(TreeNode root) {
+    private int maxSum;
 
+    public int maxPathSum(TreeNode root) {
+        maxSum = Integer.MIN_VALUE;
+        calc(root);
+        return maxSum;
+    }
+
+    private int calc (TreeNode node) {
+        if( node==null ) {
+            return 0;
+        }
+
+        int leftSum =  calc(node.left);
+        int rightSum = calc(node.right);
+
+        maxSum = Math.max(maxSum, node.val+leftSum+rightSum);
+
+        int curSum = node.val + Math.max(leftSum, rightSum);
+        curSum = Math.max(curSum, 0);
+        return curSum;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
