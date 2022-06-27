@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -43,49 +43,46 @@ import java.util.*;
  * @date 2022-6-27
  */
 public class BinaryTreeMaximumPathSum_124{
-    
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
+    public static class Solution {
+        private int maxSum;
 
-class Solution {
-    private int maxSum;
-
-    public int maxPathSum(TreeNode root) {
-        maxSum = Integer.MIN_VALUE;
-        calc(root);
-        return maxSum;
-    }
-
-    private int calc (TreeNode node) {
-        if( node==null ) {
-            return 0;
+        public int maxPathSum(TreeNode root) {
+            maxSum = Integer.MIN_VALUE;
+            calc(root);
+            return maxSum;
         }
 
-        int leftSum =  calc(node.left);
-        int rightSum = calc(node.right);
+        private int calc (TreeNode node) {
+            if( node==null ) {
+                return 0;
+            }
 
-        maxSum = Math.max(maxSum, node.val+leftSum+rightSum);
+            int leftSum =  calc(node.left);
+            int rightSum = calc(node.right);
 
-        int curSum = node.val + Math.max(leftSum, rightSum);
-        curSum = Math.max(curSum, 0);
-        return curSum;
+            maxSum = Math.max(maxSum, node.val+leftSum+rightSum );
+
+            int curSum = node.val + Math.max(leftSum, rightSum);
+            curSum = Math.max(curSum, 0);
+            return curSum;
+        }
+    }
+
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode() {}
+        TreeNode(int val) { this.val = val; }
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
     }
 }
-//leetcode submit region end(Prohibit modification and deletion)
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
