@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -77,54 +77,52 @@ public class LowestCommonAncestorOfABinaryTree_236{
         solution.lowestCommonAncestor(node3, node5, node4);
         System.out.println("gg");
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
+    public static class Solution {
+        private TreeNode res;
 
-class Solution {
-    private TreeNode res;
-
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        res = null;
-        search(root, p,q);
-        return res;
-    }
-
-    private boolean search(TreeNode cur, TreeNode p, TreeNode q) {
-        if( res!=null || cur==null ) {
-            return false;
+        public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+            res = null;
+            search(root, p,q);
+            return res;
         }
 
-        boolean b1 =  search(cur.left, p, q);
-        boolean b2 =  search(cur.right, p, q);
-
-        if( res!=null ) {
-            return false;
-        }
-
-        if( b1==true && b2==true ) {
-            res = cur;
-            return false;
-        } else if( b1==false && b2==false ) {
-            if( p.val== cur.val || q.val==cur.val ) {
-                return true;
-            } else {
+        private boolean search(TreeNode cur, TreeNode p, TreeNode q) {
+            if( res!=null || cur==null ) {
                 return false;
             }
-        } else if( b1==true || b2==true ) {
-            if( p.val== cur.val || q.val==cur.val ) {
-                res = cur;
-            }
-            return true;
-        }
 
-        return false;
+            boolean b1 =  search(cur.left, p, q);
+            boolean b2 =  search(cur.right, p, q);
+
+            if( res!=null ) {
+                return false;
+            }
+
+            if( b1==true && b2==true ) {
+                res = cur;
+                return false;
+            } else if( b1==false && b2==false ) {
+                if( p.val== cur.val || q.val==cur.val ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if( b1==true || b2==true ) {
+                if( p.val== cur.val || q.val==cur.val ) {
+                    res = cur;
+                }
+                return true;
+            }
+
+            return false;
+        }
     }
-}
-//leetcode submit region end(Prohibit modification and deletion)
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
+
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) { val = x; }
+    }
 }
