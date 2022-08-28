@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -57,13 +57,35 @@ public class QueueReconstructionByHeight_406{
     
     public static void main(String[] args) {
         Solution solution = new Solution();
+        int[][] array = new int[][] {
+            {170,0},
+            {160,1},
+            {160,2},
+            {170,1},
+        };
+        int[][] res =solution.reconstructQueue( array );
+        System.out.println("gg");
     }
+
+    public static class Solution {
+        public int[][] reconstructQueue(int[][] people) {
+            Arrays.sort(people, new Comparator<int[]>() {
+
+                public int compare(int[] person1, int[] person2) {
+                    if (person1[0] != person2[0]) {
+                        return person2[0] - person1[0];
+                    } else {
+                        return person1[1] - person2[1];
+                    }
+                }
+            });
+            List<int[]> ans = new ArrayList<int[]>();
+            for (int[] person : people) {
+                ans.add(person[1], person);
+            }
+            return ans.toArray(new int[ans.size()][]);
+        }
+    }
+
 }
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int[][] reconstructQueue(int[][] people) {
-
-    }
-}
-//leetcode submit region end(Prohibit modification and deletion)
