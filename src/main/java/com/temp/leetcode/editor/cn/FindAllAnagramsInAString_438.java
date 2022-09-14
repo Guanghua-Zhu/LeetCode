@@ -49,10 +49,18 @@ public class FindAllAnagramsInAString_438{
     
     public static void main(String[] args) {
         Solution solution = new Solution();
+        String s = "cbaebabacd";
+        String p = "abc";
+        List<Integer> res = solution.findAnagrams(s,p);
+        System.out.println("gg");
     }
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
+/**
+ * 滑动窗口
+ */
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> res = new LinkedList<>();
@@ -62,27 +70,79 @@ class Solution {
             return res;
         }
 
-        Set<Character> pSet = new HashSet<>();
-        for(char ch : p.toCharArray()) {
-            pSet.add( ch );
+        int[] pCount = new int[26];
+        char[] pChars = p.toCharArray();
+        for (char ch : pChars) {
+            pCount[ ch-'a' ]++;
         }
+
+
+        int[] sCount = new int[26];
+
+        for(int i=0; i<=sLength-pLength; i++) {
+            if( i==0 ) {
+
+            }
+
+        }
+
+
+
+
+
+
+            return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+/**
+ * 滑动窗口1
+ */
+class Solution1 {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new LinkedList<>();
+        int sLength = s.length();
+        int pLength = p.length();
+        if( pLength > sLength ) {
+            return res;
+        }
+
+        Map<Character, Integer> pMap = new HashMap<>();
+        for(char ch : p.toCharArray()) {
+            pMap.put(ch, pMap.getOrDefault(ch, 0)+1);
+        }
+        Map<Character, Integer> tempMap = new HashMap<>();
 
         char[] sChars = s.toCharArray();
         List<Character> subStrList = new LinkedList<>();
+
         for(int i=0; i<=sLength-pLength; i++) {
             if( i==0 ) {
                 for (int j=0; j<pLength; j++) {
                     subStrList.add( sChars[j] );
                 }
+                for (Character tempCh : subStrList) {
+                    tempMap.put(tempCh, tempMap.getOrDefault(tempCh, 0)+1 );
+                }
             } else {
-                subStrList.remove(0);
-                subStrList.add( sChars[i+pLength-1] );
+                Character removeCh = subStrList.remove(0);
+                Integer count = tempMap.get(removeCh);
+                if( count==1 ) {
+                    tempMap.remove( removeCh );
+                } else {
+                    tempMap.put( removeCh, count-1 );
+                }
+
+                Character addCh = sChars[i+pLength-1];
+                tempMap.put(addCh, tempMap.getOrDefault(addCh, 0)+1 );
+                subStrList.add( addCh );
             }
 
-            Set<Character> tempSet = new HashSet<>( subStrList );
             boolean flag = true;
-            for (Character tempCh : tempSet) {
-                if( !pSet.contains(tempCh) ) {
+            for (Map.Entry<Character, Integer> entry : pMap.entrySet()) {
+                Integer pCount = tempMap.getOrDefault(entry.getKey(), 0);
+                if( !pCount.equals( entry.getValue() ) ) {
                     flag = false;
                     break;
                 }
@@ -95,4 +155,3 @@ class Solution {
         return res;
     }
 }
-//leetcode submit region end(Prohibit modification and deletion)
