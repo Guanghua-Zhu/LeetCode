@@ -59,9 +59,68 @@ public class FindAllAnagramsInAString_438{
 //leetcode submit region begin(Prohibit modification and deletion)
 
 /**
- * 滑动窗口
+ * 滑动窗口 3
  */
 class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new LinkedList<>();
+        int sLength = s.length();
+        int pLength = p.length();
+        if( pLength > sLength ) {
+            return res;
+        }
+
+        int[] count = new int[26];
+        char[] pChars = p.toCharArray();
+        char[] sChars = s.toCharArray();
+        for (int i=0; i<pLength; i++) {
+            count[ sChars[i]-'a' ]++;
+            count[ pChars[i]-'a' ]--;
+        }
+
+        int diff = 0;
+        for (int i=0; i<26; i++) {
+            if( count[i]!=0 ) {
+                diff++;
+            }
+        }
+        if( diff!=0 ) {
+            res.add(0);
+        }
+
+        for (int i=0; i<=sLength-pLength; i++) {
+            // 移除索引为i的元素
+            int index1 = sChars[i]-'a';
+            count[index1]--;
+            if( count[index1] == 0 ) {
+                diff--;
+            } else if( count[index1]==-1 ) {
+                diff++;
+            }
+
+            // 添加索引为i的元素
+            int index2 = sChars[i+pLength] - 'a';
+            count[index2]++;
+            if( count[index2]==0 ) {
+                diff--;
+            } else if( count[index2]==1 ){
+                diff++;
+            }
+
+            if( diff==0 ) {
+                res.add( i+1 );
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+/**
+ * 滑动窗口 2
+ */
+class Solution2 {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> res = new LinkedList<>();
         int sLength = s.length();
@@ -76,25 +135,27 @@ class Solution {
             pCount[ ch-'a' ]++;
         }
 
-
         int[] sCount = new int[26];
+        char[] sChars = s.toCharArray();
 
         for(int i=0; i<=sLength-pLength; i++) {
             if( i==0 ) {
-
+                for (int j=0; j<pLength; j++) {
+                    sCount[ sChars[j]-'a' ]++;
+                }
+            } else {
+                sCount[ sChars[i-1]-'a' ]--;
+                sCount[ sChars[i+pLength-1]-'a' ]++;
             }
 
+            if( Arrays.equals( sCount, pCount ) ) {
+                res.add( i );
+            }
         }
 
-
-
-
-
-
-            return res;
+        return res;
     }
 }
-//leetcode submit region end(Prohibit modification and deletion)
 
 /**
  * 滑动窗口1
