@@ -45,45 +45,50 @@ import java.util.*;
 // 0 <= ki < people.length 
 // 题目数据确保队列可以被重建 
 // 
-// Related Topics 贪心 树状数组 线段树 数组 排序 👍 1377 👎 0
+//
+// Related Topics 贪心 树状数组 线段树 数组 排序 👍 1402 👎 0
 
 
 /**
  * 406, 根据身高重建队列
  * @author Aaron Zhu
- * @date 2022-8-25
+ * @date 2022-9-17
  */
 public class QueueReconstructionByHeight_406{
-    
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[][] array = new int[][] {
-            {170,0},
-            {160,1},
-            {160,2},
-            {170,1},
+        int[][] people = new int[][] {
+            {7,0},
+            {4,4},
+            {7,1},
+            {5,0},
+            {6,1},
+            {5,2}
         };
-        int[][] res =solution.reconstructQueue( array );
+        solution.reconstructQueue(people);
         System.out.println("gg");
     }
 
     public static class Solution {
         public int[][] reconstructQueue(int[][] people) {
-            Arrays.sort(people, new Comparator<int[]>() {
+            if( people.length < 2 ) {
+                return people;
+            }
 
-                public int compare(int[] person1, int[] person2) {
-                    if (person1[0] != person2[0]) {
-                        return person2[0] - person1[0];
-                    } else {
-                        return person1[1] - person2[1];
-                    }
+            Arrays.sort(people, (p1, p2) -> {
+                if( p1[0] != p2[0] ) {
+                    return p2[0] - p1[0];
+                } else {
+                    return p1[1] - p2[1];
                 }
             });
-            List<int[]> ans = new ArrayList<int[]>();
-            for (int[] person : people) {
-                ans.add(person[1], person);
+
+            List<int[]> ans = new ArrayList<>();
+            for (int[] p : people) {
+                ans.add(p[1], p);
             }
-            return ans.toArray(new int[ans.size()][]);
+
+            return ans.toArray( new int[0][0] );
         }
     }
 
