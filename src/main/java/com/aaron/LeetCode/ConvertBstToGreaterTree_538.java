@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -65,45 +65,50 @@ import java.util.*;
 public class ConvertBstToGreaterTree_538{
     
     public static void main(String[] args) {
+        TreeNode root = new TreeNode( 5 );
+        TreeNode left = new TreeNode( 1 );
+        TreeNode right = new TreeNode( 33 );
+        root.left = left;
+        root.right = right;
+
         Solution solution = new Solution();
-    }
-}
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public TreeNode convertBST(TreeNode root) {
-        dfs(root, 0);
-        return root;
+        TreeNode res = solution.convertBST( root );
+        System.out.println("gg");
     }
 
-    // 按 R、C、L的顺序遍历
-    private int dfs(TreeNode node, int sum) {
-        if( node==null ) {
-            return 0;
+    public static class Solution {
+        private int sum;
+        public TreeNode convertBST(TreeNode root) {
+            sum = 0;
+            dfs(root);
+            return root;
         }
 
-        sum = dfs(node.right, sum);
+        // 按 R、C、L的顺序遍历
+        private void dfs(TreeNode node) {
+            if( node==null ) {
+                return;
+            }
 
-        sum = sum + node.val;
-        node.val = sum;
+            dfs(node.right);
+            sum = sum + node.val;
+            node.val = sum;
+            dfs( node.left);
+        }
 
-        sum = dfs( node.left, sum );
-
-        return sum;
     }
 
-}
-//leetcode submit region end(Prohibit modification and deletion)
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode() {}
+        TreeNode(int val) { this.val = val; }
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
     }
+
 }
