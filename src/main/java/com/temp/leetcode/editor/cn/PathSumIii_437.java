@@ -66,9 +66,9 @@ public class PathSumIii_437{
  *     }
  * }
  */
-class Solution {
+class Solution2 {
     public int pathSum(TreeNode root, int targetSum) {
-
+        return 0;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

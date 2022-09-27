@@ -56,29 +56,108 @@ import java.util.*;
 public class PathSum_112{
     public static void main(String[] args) {
         Solution solution = new Solution();
+        TreeNode node5 = new TreeNode(5);
+        TreeNode node4 = new TreeNode(4);
+        TreeNode node8 = new TreeNode(8);
+        TreeNode node11 = new TreeNode(11);
+        TreeNode node13 = new TreeNode(13);
+        TreeNode node4b = new TreeNode(4);
+        TreeNode node7 = new TreeNode(7);
+        TreeNode node2 = new TreeNode(2);
+        TreeNode node1 = new TreeNode(1);
+
+        node5.left =  node4;
+        node5.right = node8;
+        node4.left = node11;
+        node8.left = node13;
+        node8.right = node4b;
+        node11.left = node7;
+        node11.right = node2;
+        node4b.left = node1;
+
+        solution.hasPathSum(node5, 22);
+        System.out.println("gg");
     }
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public boolean hasPathSum(TreeNode root, int targetSum) {
+        if( root==null ) {
+            return false;
+        }
 
+        boolean res = false;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add( root );
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if( node.left==null && node.right==null ) {
+                if( node.val==targetSum ) {
+                    res = true;
+                    break;
+                }
+            } else {
+                if (node.left!=null) {
+                    node.left.val = node.left.val + node.val;
+                    queue.offer( node.left );
+                }
+
+                if (node.right != null) {
+                    node.right.val = node.right.val + node.val;
+                    queue.offer( node.right );
+                }
+            }
+        }
+
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
+
+class Solution1 {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if( root==null ) {
+            return false;
+        }
+
+        boolean res = false;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add( root );
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if( node.left==null && node.right==null ) {
+                if( node.val==targetSum ) {
+                    res = true;
+                    break;
+                }
+            } else {
+                if (node.left!=null) {
+                    node.left.val = node.left.val + node.val;
+                    queue.offer( node.left );
+                }
+
+                if (node.right != null) {
+                    node.right.val = node.right.val + node.val;
+                    queue.offer( node.right );
+                }
+            }
+        }
+
+        return res;
+    }
+}
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode() {}
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
