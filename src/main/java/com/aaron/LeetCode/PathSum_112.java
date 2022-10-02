@@ -65,6 +65,7 @@ public class PathSum_112{
         TreeNode node7 = new TreeNode(7);
         TreeNode node2 = new TreeNode(2);
         TreeNode node1 = new TreeNode(1);
+        TreeNode node5b = new TreeNode(5);
 
         node5.left =  node4;
         node5.right = node8;
@@ -73,7 +74,8 @@ public class PathSum_112{
         node8.right = node4b;
         node11.left = node7;
         node11.right = node2;
-        node4b.left = node1;
+        node4b.right = node1;
+        node4b.left = node5b;
 
         solution.hasPathSum(node5, 22);
         System.out.println("gg");
