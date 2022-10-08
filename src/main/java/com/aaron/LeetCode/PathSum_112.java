@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -55,7 +55,7 @@ import java.util.*;
  */
 public class PathSum_112{
     public static void main(String[] args) {
-        //Solution solution = new Solution();
+        Solution1 solution = new Solution1();
         TreeNode node5 = new TreeNode(5);
         TreeNode node4 = new TreeNode(4);
         TreeNode node8 = new TreeNode(8);
@@ -65,6 +65,7 @@ public class PathSum_112{
         TreeNode node7 = new TreeNode(7);
         TreeNode node2 = new TreeNode(2);
         TreeNode node1 = new TreeNode(1);
+        TreeNode node5b = new TreeNode(5);
 
         node5.left =  node4;
         node5.right = node8;
@@ -73,9 +74,10 @@ public class PathSum_112{
         node8.right = node4b;
         node11.left = node7;
         node11.right = node2;
-        node4b.left = node1;
+        node4b.right = node1;
+        node4b.left = node5b;
 
-        //solution.hasPathSum(node5, 22);
+        solution.hasPathSum(node5, 22);
         System.out.println("gg");
     }
 
