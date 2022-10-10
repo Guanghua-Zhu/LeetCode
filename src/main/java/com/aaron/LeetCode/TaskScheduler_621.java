@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -64,12 +64,35 @@ public class TaskScheduler_621{
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int leastInterval(char[] tasks, int n) {
+    public static class Solution {
+        public int leastInterval(char[] tasks, int n) {
+            int size = tasks.length;
+            if( n==0 ) {
+                return size;
+            }
+            int maxCount = Integer.MIN_VALUE;
+            Map<Character, Integer> counts = new HashMap<>();
+            for (char ch : tasks) {
+                int count = counts.getOrDefault(ch, 0);
+                count++;
+                counts.put(ch, count);
+                if( count > maxCount ) {
+                    maxCount = count;
+                }
+            }
 
+            int maxCountNum = 0;
+            for (Map.Entry<Character, Integer> entry : counts.entrySet()) {
+                if( entry.getValue() == maxCount ) {
+                    maxCountNum++;
+                }
+            }
+
+            int res = (n+1)*(maxCount-1) + maxCountNum;
+            res = Math.max( res, size );
+            return res;
+        }
     }
+
 }
-//leetcode submit region end(Prohibit modification and deletion)
