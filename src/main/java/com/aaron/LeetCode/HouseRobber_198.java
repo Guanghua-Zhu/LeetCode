@@ -66,28 +66,4 @@ public class HouseRobber_198 {
         }
     }
 
-    public static class Solution1 {
-        public int rob(int[] nums) {
-            int size = nums.length;
-            if( size==1 ) {
-                return nums[0];
-            }
-
-            // 偷到第i个房子时最大收益
-            int[] dp = new int[size];
-            dp[0] = nums[0];
-            dp[1] = nums[1];
-            int lastMax = dp[0];
-            int res = Math.max(dp[0], dp[1]);
-
-            for (int i=2; i<size; i++) {
-                dp[i] = nums[i] + lastMax;
-                lastMax = Math.max(lastMax, dp[i-1]);
-                res = Math.max(res, dp[i]);
-            }
-
-            return res;
-        }
-    }
-
 }
