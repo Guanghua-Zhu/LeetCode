@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -53,12 +53,34 @@ public class HouseRobberIi_213{
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int rob(int[] nums) {
+    public static class Solution {
+        public int rob(int[] nums) {
+            int size = nums.length;
+            if( size == 1 ) {
+                return nums[0];
+            }
 
+            int[][] dp = new int[size][2];
+            // 不偷第一个
+            dp[0][0] = 0;
+            dp[1][0] = nums[1];
+
+            // 偷第一个
+            dp[0][1] = nums[0];
+            dp[1][1] = Math.max(nums[0], nums[1]);
+
+            for (int i=2; i<size; i++) {
+                dp[i][0] = Math.max( dp[i-2][0]+nums[i], dp[i-1][0]);
+                if( i!=size-1 ) {
+                    dp[i][1] = Math.max( dp[i-2][1]+nums[i], dp[i-1][1]);
+                } else {
+                    dp[i][1] = dp[i-1][1];
+                }
+            }
+
+            return Math.max(dp[size-1][0], dp[size-1][1]);
+        }
     }
+
 }
-//leetcode submit region end(Prohibit modification and deletion)
