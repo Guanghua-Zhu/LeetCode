@@ -56,24 +56,51 @@ public class HouseRobberIii_337{
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    public int rob(TreeNode root) {
 
+class Solution {
+
+    private Map<TreeNode, Integer> cache;
+
+    public int rob(TreeNode root) {
+        cache = new HashMap<>();
+        return calcMaxBalance(root);
+    }
+
+    private int calcMaxBalance(TreeNode node) {
+        if( node == null ) {
+            return 0;
+        } else if( cache.containsKey(node) ) {
+            return cache.get( node );
+        }
+
+        // 不偷当前节点
+        int ans1 = calcMaxBalance(node.left) + calcMaxBalance(node.right);
+
+        // 偷当前节点
+        int ans2 = node.val;
+        if( node.left!=null ) {
+            ans2 += calcMaxBalance( node.left.left ) + calcMaxBalance( node.left.right );
+        }
+        if( node.right!=null ) {
+            ans2 += calcMaxBalance( node.right.left ) + calcMaxBalance( node.right.right);
+        }
+
+        int res = Math.max(ans1, ans2);
+        cache.put( node, res );
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode() {}
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
