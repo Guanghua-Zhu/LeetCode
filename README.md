@@ -11,4 +11,4 @@
 Aaron Zhu, zghcivilization@163.com
 
 ## License
-MIT
+MIT 2
