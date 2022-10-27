@@ -62,6 +62,37 @@ class Solution {
     private Map<TreeNode, Integer> cache;
 
     public int rob(TreeNode root) {
+        int[] res = calcMaxBalance(root);
+        return Math.max(res[0], res[1]);
+    }
+
+    /**
+     *
+     * @param node
+     * @return index: 0, 表示不偷; index: 1, 表示偷
+     */
+    private int[] calcMaxBalance(TreeNode node) {
+        if( node == null ) {
+            return new int[2];
+        }
+
+        int[] left = calcMaxBalance( node.left );
+        int[] right = calcMaxBalance( node.right );
+
+        // 不偷当前节点
+        int ans1 = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+        // 偷当前节点
+        int ans2 = node.val + left[0] + right[0];
+        int[] res = new int[]{ans1, ans2};
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+class Solution1 {
+    private Map<TreeNode, Integer> cache;
+
+    public int rob(TreeNode root) {
         cache = new HashMap<>();
         return calcMaxBalance(root);
     }
@@ -90,7 +121,6 @@ class Solution {
         return res;
     }
 }
-//leetcode submit region end(Prohibit modification and deletion)
 
 class TreeNode {
     int val;
