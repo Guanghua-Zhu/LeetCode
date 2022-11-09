@@ -62,6 +62,29 @@ class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
 
     }
+
+
+    /**
+     * 对 start -> ... -> end 链表进行反转, 结果为 end -> ... -> start
+     * @param start
+     * @param end
+     * @return end
+     */
+    private ListNode reverse(ListNode start, ListNode end) {
+        ListNode dummy = null;
+        ListNode prev = dummy;
+        ListNode cur = start;
+        ListNode next = cur.next;
+
+        while ( cur != end.next ) {
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+            next = cur.next;
+        }
+
+        return end;
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
