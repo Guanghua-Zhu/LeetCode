@@ -60,7 +60,21 @@ public class ReverseNodesInKGroup_25{
 
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode root = null;
 
+        ListNode dummy = new ListNode();
+        ListNode start = dummy;
+        ListNode end = dummy;
+
+
+    }
+
+    private ListNode goSteps(ListNode node, int steps) {
+        ListNode res = node;
+        for (int i=)
+
+
+        return res;
     }
 
 
@@ -85,6 +99,8 @@ class Solution {
 
         return end;
     }
+
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
