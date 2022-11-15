@@ -63,17 +63,38 @@ class Solution {
         ListNode root = null;
 
         ListNode dummy = new ListNode();
-        ListNode start = dummy;
+        dummy.next = head;
         ListNode end = dummy;
+        ListNode start = dummy;
 
+        while (true) {
+            start = start.next;
+            end = goSteps(end, k);
+            ListNode tempNext = end.next;
+            if( end == null ) {
+                break;
+            }
 
+            ListNode subHead = reverse(start,end);
+            start.next = tempNext;
+            if( root == null ) {
+                root = subHead;
+            }
+
+            end = start;
+        }
+
+        return root;
     }
 
     private ListNode goSteps(ListNode node, int steps) {
-        ListNode res = node;
-        for (int i=)
-
-
+        ListNode res = null;
+        for (int i=0; i<steps; i++) {
+            if(node==null) {
+                break;
+            }
+            node = node.next;
+        }
         return res;
     }
 
