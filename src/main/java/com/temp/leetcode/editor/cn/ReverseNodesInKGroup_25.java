@@ -66,25 +66,25 @@ class Solution {
         dummy.next = head;
         ListNode end = dummy;
         ListNode start = dummy;
+        ListNode lastEndNode = dummy;
 
-        while (true) {
+        while (start.next!=null) {
             start = start.next;
             end = goSteps(end, k);
-            ListNode tempNext = end.next;
             if( end == null ) {
                 break;
             }
 
+            ListNode curNextNode = end.next;
             ListNode subHead = reverse(start,end);
-            start.next = tempNext;
-            if( root == null ) {
-                root = subHead;
-            }
+            start.next = curNextNode;
 
+            lastEndNode.next = end;
+            lastEndNode = start;
             end = start;
         }
 
-        return root;
+        return dummy.next;
     }
 
     private ListNode goSteps(ListNode node, int steps) {
