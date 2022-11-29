@@ -93,79 +93,82 @@ public class StringToIntegerAtoi_8{
     
     public static void main(String[] args) {
         Solution solution = new Solution();
+        String s = "-42";
+        solution.myAtoi(s);
+        System.out.println("gg");
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int myAtoi(String s) {
-        if( isBlank(s) ) {
-            return 0;
-        }
-
-        // 处理前导空格
-        s = s.trim();
-        if( isBlank(s) ) {
-            return 0;
-        }
-
-        // 处理符号位
-        int factor = 1;    // 系数
-        char[] chars = s.toCharArray();
-        if ( chars[0] == '-' ) {
-            factor = -1;
-            s = s.substring(1);
-        } else if( chars[0] == '+' ) {
-            factor = 1;
-            s = s.substring(1);
-        }
-
-        // 处理前导零
-        int zeroEndIndex = 0;
-        for( ; zeroEndIndex<s.length(); zeroEndIndex++) {
-            if( s.charAt(zeroEndIndex) != '0' ) {
-                break;
+    public static class Solution {
+        public int myAtoi(String s) {
+            if( isBlank(s) ) {
+                return 0;
             }
-        }
-        s = s.substring(zeroEndIndex);
-        if( isBlank(s) ) {
-            return 0;
-        }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(0);
-        int maxLength = String.valueOf(Integer.MAX_VALUE).length() + 2;
-        for (int i=0; i<chars.length; i++) {
-            char ch = chars[i];
-            if( ch>='1' && ch<='9' ) {
-                sb.append(ch);
+            // 处理前导空格
+            s = s.trim();
+            if( isBlank(s) ) {
+                return 0;
+            }
+
+            // 处理符号位
+            int factor = 1;    // 系数
+            char[] chars = s.toCharArray();
+            if ( chars[0] == '-' ) {
+                factor = -1;
+                s = s.substring(1);
+            } else if( chars[0] == '+' ) {
+                factor = 1;
+                s = s.substring(1);
+            }
+
+            // 处理前导零
+            int zeroEndIndex = 0;
+            for( ; zeroEndIndex<s.length(); zeroEndIndex++) {
+                if( s.charAt(zeroEndIndex) != '0' ) {
+                    break;
+                }
+            }
+            s = s.substring(zeroEndIndex);
+            if( isBlank(s) ) {
+                return 0;
+            }
+
+            chars = s.toCharArray();
+            StringBuilder sb = new StringBuilder();
+            sb.append(0);
+            int maxLength = String.valueOf(Integer.MAX_VALUE).length() + 2;
+            for (int i=0; i<chars.length; i++) {
+                char ch = chars[i];
+                if( ch>='0' && ch<='9' ) {
+                    sb.append(ch);
+                } else {
+                    break;
+                }
+
+                if( sb.length() > maxLength ) {
+                    break;
+                }
+            }
+
+            long num1 = Long.valueOf(sb.toString(), 10) * factor;
+            int res = 0;
+            if( num1 > Integer.MAX_VALUE ) {
+                res = Integer.MAX_VALUE;
+            } else if( num1 < Integer.MIN_VALUE ) {
+                res = Integer.MIN_VALUE;
             } else {
-                break;
+                res = (int) num1;
             }
 
-            if( sb.length() > maxLength ) {
-                break;
+            return res;
+        }
+
+        private boolean isBlank(String s) {
+            if( s==null || s.length()==0 ) {
+                return true;
             }
+            return false;
         }
-
-        long num1 = Long.valueOf(sb.toString(), 10) * factor;
-        int res = 0;
-        if( num1 > Integer.MAX_VALUE ) {
-            res = Integer.MAX_VALUE;
-        } else if( num1 < Integer.MIN_VALUE ) {
-            res = Integer.MIN_VALUE;
-        } else {
-            res = (int) num1;
-        }
-
-        return res;
     }
 
-    private boolean isBlank(String s) {
-        if( s==null || s.length()==0 ) {
-            return true;
-        }
-        return false;
-    }
 }
-//leetcode submit region end(Prohibit modification and deletion)
