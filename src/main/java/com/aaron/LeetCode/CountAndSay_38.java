@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -79,12 +79,41 @@ public class CountAndSay_38{
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public String countAndSay(int n) {
+    public static class Solution {
+        private static Map<Integer, String> cache = new HashMap<>();
+        static {
+            cache.put(1, "1");
+            cache.put(2, "11");
+        }
+
+        public String countAndSay(int n) {
+            if( cache.containsKey(n) ) {
+                return cache.get(n);
+            }
+
+            String pre = countAndSay(n-1);
+            String des = parse(pre);
+            cache.put(n, des);
+            return des;
+        }
+
+        private String parse(String s) {
+            StringBuilder sb = new StringBuilder();
+            char[] chars = s.toCharArray();
+            int count = 0;
+            for (int i=0; i<s.length(); i++) {
+                if( i==s.length()-1 || chars[i]!=chars[i+1] ) {
+                    count++;
+                    sb.append(count).append(chars[i]);
+                    count=0;
+                } else {
+                    count++;
+                }
+            }
+            return sb.toString();
+        }
 
     }
 }
-//leetcode submit region end(Prohibit modification and deletion)
+
