@@ -105,8 +105,8 @@ class Solution {
         res = false;
     }
 
-    private void search() {
-
+    private void search(int sPos, int pPos) {
+        if( sPos )
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
