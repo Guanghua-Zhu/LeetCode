@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -52,33 +52,31 @@ public class PowxN_50{
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public double myPow(double x, int n) {
-        boolean signFlag = false;   // 负号标志位
-        if( n==0 ) {
-            return 1;
-        } else if( x ==1 ) {
-            return 1;
-        }
-        else  if( n<0 ) {
-            signFlag = true;
-            n = -1 * n;
-        }
+    public static class Solution {
+        public double myPow(double x, int n) {
+            long n2 = n;
+            boolean signFlag = false;   // 负号标志位
 
-        double ans = 1;
-        double temp = x;
-        while ( n!=0 ) {
-            if( (n&1) ==1 ) {
-                ans *= temp;
+            if( n2==0 ) {
+                return 1;
+            } else if( n2<0 ) {
+                signFlag = true;
+                n2 = -1 * n2;
             }
-            temp *= temp;
-            n >>= 1;
-        }
 
-        return signFlag ? 1/ans : ans;
+            double ans = 1;
+            double temp = x;
+            while ( n2!=0 ) {
+                if( (n2&1) ==1 ) {
+                    ans *= temp;
+                }
+                temp *= temp;
+                n2 >>= 1;
+            }
+
+            return signFlag ? 1/ans : ans;
+        }
     }
+
 }
-//leetcode submit region end(Prohibit modification and deletion)
