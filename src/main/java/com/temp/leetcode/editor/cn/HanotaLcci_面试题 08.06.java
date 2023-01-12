@@ -45,7 +45,21 @@ public class HanotaLcci_面试题 08.06{
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    /**
+     * 目标：将 A中 #1 ~ #N 盘子移动到 C
+     * 1. 将 A 中 #1 ~ #N-1 盘子移动到 B
+     * 2. 将 A 中 #N 盘子移动到 C
+     * 3. 将 B 中 #1 ~ #N-1 盘子移动到 C
+     * @param A
+     * @param B
+     * @param C
+     */
+
     public void hanota(List<Integer> A, List<Integer> B, List<Integer> C) {
+
+    }
+
+    private void move(  boolean aIsDest ) {
 
     }
 }
