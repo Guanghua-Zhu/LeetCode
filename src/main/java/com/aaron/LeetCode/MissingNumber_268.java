@@ -69,7 +69,6 @@ public class MissingNumber_268{
         System.out.println("g");
     }
 
-
     /**
      * 异或法
      */
