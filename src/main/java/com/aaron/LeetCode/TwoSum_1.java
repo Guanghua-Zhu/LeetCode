@@ -37,46 +37,70 @@ import java.util.*;
 // 提示： 
 //
 // 
-// 2 <= nums.length <= 104 
-// -109 <= nums[i] <= 109 
-// -109 <= target <= 109 
+// 2 <= nums.length <= 10⁴ 
+// -10⁹ <= nums[i] <= 10⁹ 
+// -10⁹ <= target <= 10⁹ 
 // 只会存在一个有效答案 
 // 
 //
-// 进阶：你可以想出一个时间复杂度小于 O(n2) 的算法吗？ 
-// Related Topics 数组 哈希表 
-// 👍 13695 👎 0
+// 
+//
+// 进阶：你可以想出一个时间复杂度小于 O(n²) 的算法吗？ 
+//
+// Related Topics 数组 哈希表 👍 16236 👎 0
 
 
 /**
  * 1, 两数之和
  * @author Aaron Zhu
- * @date 2022-3-11
+ * @date 2023-2-3
  */
 public class TwoSum_1{
     
     public static void main(String[] args) {
         Solution solution = new Solution();
-        solution.twoSum(new int[]{3,2,4}, 6);
-        System.out.println("gg");
     }
 
     public static class Solution {
         public int[] twoSum(int[] nums, int target) {
-            int[] res = null;
+            int[] res = new int[2];
+            int size = nums.length;
             Map<Integer, Integer> map = new HashMap<>();
-            for(int i=0; i<nums.length; i++) {
-                if ( map.containsKey(target-nums[i]) ) {
-                    res = new int[]{i, map.get(target-nums[i])};
+            for (int i=0; i<size; i++) {
+                int num = target - nums[i];
+                if( map.containsKey(num) ) {
+                    res[0] = i;
+                    res[1] = map.get(num);
                     break;
                 } else {
-                    map.put(nums[i], i);
+                    map.put(nums[i],i);
                 }
             }
-            return res;
+
+            return  res;
         }
     }
 
+    public static class Solution1 {
+        public int[] twoSum(int[] nums, int target) {
+            int[] res = new int[2];
+            int size = nums.length;
+            boolean flag = false;
+            for (int i=0; i<size-1; i++) {
+                if( flag ) {
+                    break;
+                }
+                for (int j=i+1; j<size; j++) {
+                    if( nums[i]+ nums[j] == target ) {
+                        res[0] = i;
+                        res[1] = j;
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+
+            return  res;
+        }
+    }
 }
-
-

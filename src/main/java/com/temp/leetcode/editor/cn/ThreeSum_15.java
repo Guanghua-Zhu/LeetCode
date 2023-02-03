@@ -1,5 +1,7 @@
 package com.temp.leetcode.editor.cn;
 
+import org.graalvm.compiler.lir.LIR;
+
 import java.util.*;
 
 //给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != 
@@ -69,7 +71,24 @@ public class ThreeSum_15{
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
+        Set<List<Integer>> res = new HashSet<>();
 
+        int size = nums.length;
+
+        for (int i=0; i<size-2; i++) {
+            for (int j=i+1; j<size-1; j++) {
+                for (int k=j+1; k<size; k++) {
+                    if( nums[i]+nums[j]+nums[k]==0 ) {
+                        res.add( Arrays.asList(nums[i], nums[j], nums[k]) );
+                    }
+                 }
+            }
+        }
+
+        res.stream()
+
+
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
