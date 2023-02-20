@@ -44,14 +44,73 @@ public class SortAnArray_912{
     
     public static void main(String[] args) {
         Solution solution = new Solution();
+        int[] nums = new int[]{5,2,3,1};
+        solution.sortArray(nums);
+        System.out.println();
     }
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
-
+/**
+ * 归并排序
+ */
 class Solution {
+    private static int[] aux;
 
+    public int[] sortArray(int[] nums) {
+        int size = nums.length;
+        aux = new int[size];
+        sort(nums, 0, size-1);
+        return nums;
+    }
+
+    private void sort(int[] array, int left, int right) {
+        if( left>=right ) {
+            return;
+        }
+
+        int mid = left + (right-left)/2;
+        sort(array, left, mid);
+        sort(array, mid+1, right);
+        merge(array, left, mid, right);
+    }
+
+    private void merge(int[] array, int left, int mid, int right) {
+        for (int k=left; k<=right; k++) {
+            aux[k] = array[k];
+        }
+
+        int i = left;   // 左半部分起始索引
+        int j = mid+1;  // 右半部分起始索引
+
+        for (int k=left; k<=right; k++) {
+
+            if( i>mid ) {   // 左半分部分归并完成
+                array[k] = aux[j];
+                j++;
+            } else if( j>right ) {  // 右半部分归并完成
+                array[k] = aux[i];
+                i++;
+            } else if( aux[i]<aux[j] ) {
+                array[k] = aux[i];
+                i++;
+            } else {
+                array[k] = aux[j];
+                j++;
+            }
+        }
+    }
+
+}
+
+//leetcode submit region end(Prohibit modification and deletion)
+
+
+/**
+ * 冒泡、选择、插入
+ */
+class Solution1 {
     // 插入排序
     public int[] sortArray(int[] nums) {
         int size = nums.length;
@@ -106,5 +165,3 @@ class Solution {
     }
 
 }
-
-//leetcode submit region end(Prohibit modification and deletion)
