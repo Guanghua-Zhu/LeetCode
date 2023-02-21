@@ -53,9 +53,48 @@ public class SortAnArray_912{
 //leetcode submit region begin(Prohibit modification and deletion)
 
 /**
- * 堆排序
+ * 堆排序：实现minHeap
  */
 class Solution {
+
+    private int[] minHeap;
+
+    public int[] sortArray(int[] nums) {
+        int size = nums.length;
+        minHeap = new int[size+1];
+
+        // 构建最小堆
+        for(int i=1; i<=size; i++) {
+            minHeap[i] = nums[i-1];
+            swim(i);
+        }
+
+
+
+    }
+
+    /**
+     * 上浮i位置的元素
+     * @param i
+     */
+    private void swim(int i) {
+        // 父元素存在 且 当前元素 小于 父元素
+        while (i>1 & minHeap[i] < minHeap[i/2] ) {
+            int temp = minHeap[i];
+            minHeap[i] = minHeap[i/2];
+            minHeap[i/2] = temp;
+            i = i/2;
+        }
+    }
+
+}
+
+//leetcode submit region end(Prohibit modification and deletion)
+
+/**
+ * 堆排序：优先队列
+ */
+class Solution3 {
 
     public int[] sortArray(int[] nums) {
         Queue<Integer> queue = new PriorityQueue<>( );
@@ -71,8 +110,6 @@ class Solution {
     }
 
 }
-
-//leetcode submit region end(Prohibit modification and deletion)
 
 /**
  * 归并排序
