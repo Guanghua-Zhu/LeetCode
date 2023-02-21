@@ -53,9 +53,31 @@ public class SortAnArray_912{
 //leetcode submit region begin(Prohibit modification and deletion)
 
 /**
- * 归并排序
+ * 堆排序
  */
 class Solution {
+
+    public int[] sortArray(int[] nums) {
+        Queue<Integer> queue = new PriorityQueue<>( );
+        for (int num : nums) {
+            queue.add( num );
+        }
+
+        for (int i=0; i<nums.length; i++) {
+            nums[i] = queue.remove();
+        }
+
+        return nums;
+    }
+
+}
+
+//leetcode submit region end(Prohibit modification and deletion)
+
+/**
+ * 归并排序
+ */
+class Solution2 {
     private static int[] aux;
 
     public int[] sortArray(int[] nums) {
@@ -103,8 +125,6 @@ class Solution {
     }
 
 }
-
-//leetcode submit region end(Prohibit modification and deletion)
 
 
 /**
