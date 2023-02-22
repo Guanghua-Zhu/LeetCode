@@ -60,7 +60,7 @@ public class FourSumIi_454{
 }
 
 //leetcode submit region begin(Prohibit modification and deletion)
-class Solution4 {
+class Solution996 {
     public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
         return 0;
     }

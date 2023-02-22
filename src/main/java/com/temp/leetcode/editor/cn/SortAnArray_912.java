@@ -52,25 +52,47 @@ public class SortAnArray_912{
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
+class Solution {
+    public int[] sortArray(int[] nums) {
+        return null;
+    }
+}
+
+//leetcode submit region end(Prohibit modification and deletion)
+
 /**
  * 堆排序：实现minHeap
  */
-class Solution {
-
+class Solution4 {
     private int[] minHeap;
 
     public int[] sortArray(int[] nums) {
         int size = nums.length;
         minHeap = new int[size+1];
 
-        // 构建最小堆
-        for(int i=1; i<=size; i++) {
-            minHeap[i] = nums[i-1];
-            swim(i);
+        // 方式1：通过上浮构建最小堆
+//        for(int i=1; i<=size; i++) {
+//            minHeap[i] = nums[i-1];
+//            swim(i);
+//        }
+
+        // 方式2：通过下沉构建最小堆
+        for (int i=0; i<size; i++) {
+            minHeap[i+1] = nums[i];
+        }
+        for (int i=size/2; i>0; i--) {
+            sink(i, size);
         }
 
+        int N = size;
+        for (int i=1; i<=size; i++) {
+            nums[i-1] = minHeap[1];
+            swap(1, N);
+            N--;
+            sink(1, N);
+        }
 
-
+        return nums;
     }
 
     /**
@@ -80,16 +102,40 @@ class Solution {
     private void swim(int i) {
         // 父元素存在 且 当前元素 小于 父元素
         while (i>1 & minHeap[i] < minHeap[i/2] ) {
-            int temp = minHeap[i];
-            minHeap[i] = minHeap[i/2];
-            minHeap[i/2] = temp;
+            swap(i, i/2);
             i = i/2;
         }
     }
 
-}
+    /**
+     * 在数量为N的堆中，下沉i位置的元素
+     * @param i
+     * @param N
+     */
+    private void sink(int i, int N) {
+        while ( 2*i<=N) {
+            int minIndex = i;
+            if( minHeap[2*i] < minHeap[i] ) {
+                minIndex = 2*i;
+            }
+            if( 2*i+1<=N && minHeap[2*i+1] < minHeap[minIndex] ) {
+                minIndex = 2*i+1;
+            }
+            if( minIndex == i ) {
+                break;
+            }
+            swap(i, minIndex);
+            i = minIndex;
+        }
+    }
 
-//leetcode submit region end(Prohibit modification and deletion)
+    private void swap(int i, int j) {
+        int temp = minHeap[i];
+        minHeap[i] = minHeap[j];
+        minHeap[j] = temp;
+    }
+
+}
 
 /**
  * 堆排序：优先队列
