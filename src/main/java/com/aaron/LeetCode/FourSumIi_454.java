@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -55,14 +55,29 @@ import java.util.*;
 public class FourSumIi_454{
     
     public static void main(String[] args) {
-        Solution4 solution = new Solution4();
+        Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution996 {
-    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
-        return 0;
+    public static class Solution {
+        public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+            int res = 0;
+            Map<Long, Integer> subSumCountMap = new HashMap<>();
+            int size = nums1.length;
+            for (int i=0; i<size; i++) {
+                for (int j=0; j<size; j++) {
+                    long sum34 = (long)nums3[i] + (long)nums4[j];
+                    subSumCountMap.put( sum34, subSumCountMap.getOrDefault(sum34,0)+1 );
+                }
+            }
+
+            for (int i=0; i<size; i++) {
+                for (int j=0; j<size; j++) {
+                    long sum12 = (long)nums1[i] + (long)nums2[j];
+                    res += subSumCountMap.getOrDefault( -sum12, 0 );
+                }
+            }
+
+            return res;
+        }
     }
 }
-//leetcode submit region end(Prohibit modification and deletion)
