@@ -1,4 +1,4 @@
-package com.aaron.LeetCode;
+package com.temp.leetcode.editor.cn;
 
 import java.util.*;
 
@@ -35,33 +35,26 @@ import java.util.*;
 // 1 <= prices.length <= 10⁵ 
 // 0 <= prices[i] <= 10⁴ 
 // 
-// Related Topics 数组 动态规划 👍 2374 👎 0
+//
+// Related Topics 数组 动态规划 👍 2828 👎 0
 
 
 /**
  * 121, 买卖股票的最佳时机
  * @author Aaron Zhu
- * @date 2022-6-4
+ * @date 2023-3-1
  */
 public class BestTimeToBuyAndSellStock_121{
+    
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-
-    public static class Solution {
-        public int maxProfit(int[] prices) {
-            int minPrice = prices[0];
-            int maxProfit = 0;
-
-            for (int i=1; i<prices.length; i++) {
-                if( prices[i] < minPrice ) {
-                    minPrice = prices[i];
-                } else {
-                    maxProfit = Math.max(maxProfit, prices[i]-minPrice );
-                }
-            }
-            return maxProfit;
-        }
-    }
-
 }
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxProfit(int[] prices) {
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
