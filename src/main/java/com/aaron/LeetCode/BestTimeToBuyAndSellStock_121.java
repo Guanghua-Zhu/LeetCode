@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -49,12 +49,20 @@ public class BestTimeToBuyAndSellStock_121{
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int maxProfit(int[] prices) {
-
+    public static class Solution {
+        public int maxProfit(int[] prices) {
+            int maxProfit = 0;
+            int minPrice = prices[0];
+            for (int price : prices) {
+                int curProfit = price - minPrice;
+                if( curProfit > maxProfit) {
+                    maxProfit = curProfit;
+                }
+                minPrice = Math.min(minPrice, price);
+            }
+            return maxProfit;
+        }
     }
+
 }
-//leetcode submit region end(Prohibit modification and deletion)
