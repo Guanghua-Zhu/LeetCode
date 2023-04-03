@@ -63,6 +63,9 @@ public class BestTimeToBuyAndSellStockIii_123{
     
     public static void main(String[] args) {
         Solution solution = new Solution();
+        int[] prices = new int[]{20,50,2};
+        solution.maxProfit(prices);
+        System.out.println("gg");
     }
 
     /**
