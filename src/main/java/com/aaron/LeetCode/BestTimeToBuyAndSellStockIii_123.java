@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -64,12 +64,35 @@ public class BestTimeToBuyAndSellStockIii_123{
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int maxProfit(int[] prices) {
+    /**
+     * DP
+     */
+    public static class Solution {
+        public int maxProfit(int[] prices) {
+            // 第一维下标: 0: 前一天的数据; 1: 当天的数据
+            // 第二维下标: 0: 买完第1笔股票；1: 卖完第1笔股票；2: 买完第2笔股票；3: 卖完第2笔股票
+            int[][] dp = new int[2][4];
 
+            dp[0][0] = -prices[0];
+            dp[0][1] = 0;
+            dp[0][2] = -prices[0];
+            dp[0][3] = 0;
+
+            for(int i=1; i<prices.length; i++) {
+                dp[1][0] = Math.max(dp[0][0], -prices[i]);
+                dp[1][1] = Math.max(dp[0][1], dp[0][0]+prices[i]);
+                dp[1][2] = Math.max(dp[0][2], dp[0][1]-prices[i]);
+                dp[1][3] = Math.max(dp[0][3], dp[0][2]+prices[i]);
+
+                dp[0][0] = dp[1][0];
+                dp[0][1] = dp[1][1];
+                dp[0][2] = dp[1][2];
+                dp[0][3] = dp[1][3];
+            }
+
+            return Math.max(dp[0][1], dp[0][3]);
+        }
     }
+
 }
-//leetcode submit region end(Prohibit modification and deletion)
