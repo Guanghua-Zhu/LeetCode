@@ -1,4 +1,4 @@
-package com.temp.leetcode.editor.cn;
+package com.aaron.LeetCode;
 
 import java.util.*;
 
@@ -54,12 +54,27 @@ public class BestTimeToBuyAndSellStockWithTransactionFee_714{
     public static void main(String[] args) {
         Solution solution = new Solution();
     }
-}
 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int maxProfit(int[] prices, int fee) {
+    /**
+     * DP
+     */
+    public static class Solution {
+        public int maxProfit(int[] prices, int fee) {
+            int[][] dp = new int[2][2];
+            // 第1维下标: 0: 前一天; 1: 当天
+            // 第2维下标: 0: 持有股票; 1: 持有现金
+            dp[0][0] = -prices[0];
+            dp[0][1] = 0;
 
+            for (int i=1; i<prices.length; i++) {
+                dp[1][0] = Math.max(dp[0][0], dp[0][1] - prices[i]);
+                dp[1][1] = Math.max(dp[0][1], dp[0][0] + prices[i] - fee);
+
+                dp[0][0] = dp[1][0];
+                dp[0][1] = dp[1][1];
+            }
+            return dp[0][1];
+        }
     }
+
 }
-//leetcode submit region end(Prohibit modification and deletion)
