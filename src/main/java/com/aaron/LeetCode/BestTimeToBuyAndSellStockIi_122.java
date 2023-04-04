@@ -57,6 +57,9 @@ public class BestTimeToBuyAndSellStockIi_122{
         Solution solution = new Solution();
     }
 
+    /**
+     * 贪心算法
+     */
     public static class Solution {
         public int maxProfit(int[] prices) {
             int res = 0;
@@ -73,17 +76,28 @@ public class BestTimeToBuyAndSellStockIi_122{
     /**
      * DP
      */
-    public static class Solution1 {
+
+
+    /**
+     * DP
+     */
+    public static class Solution2 {
         public int maxProfit(int[] prices) {
-            int[][] dp = new int[prices.length][2];
-            // index 0: 手中无股票；index 1：手中有股票
-            dp[0][0] = 0;
-            dp[0][1] = -prices[0];
-            for (int i=1; i<prices.length; i++) {
-                dp[i][0] = Math.max( dp[i-1][0], dp[i-1][1]+prices[i] );
-                dp[i][1] = Math.max( dp[i-1][1], dp[i-1][0]-prices[i] );
+            // 第一维下标: 0: 前一天的数据; 1: 当天的数据
+            // 第二维下标: 0: 持有股票；1: 持有现金
+            int[][] dp = new int[2][2];
+            dp[0][0] = -prices[0];
+            dp[0][1] = 0;
+
+            for(int i=1; i<prices.length; i++) {
+                dp[1][0] = Math.max(dp[0][0], dp[0][1]-prices[i] );
+                dp[1][1] = Math.max(dp[0][1], dp[0][0]+prices[i] );
+
+                dp[0][0] = dp[1][0];
+                dp[0][1] = dp[1][1];
             }
-            return dp[prices.length-1][0];
+
+            return Math.max(dp[0][0], dp[0][1]);
         }
     }
 
