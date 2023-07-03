@@ -1,6 +1,7 @@
 package com.aaron.LeetCode;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 //给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。 
 //
@@ -43,106 +44,161 @@ import java.util.*;
 // s 和 wordDict[i] 仅有小写英文字母组成 
 // wordDict 中的所有字符串 互不相同 
 // 
-// Related Topics 字典树 记忆化搜索 哈希表 字符串 动态规划 👍 1655 👎 0
+//
+// Related Topics 字典树 记忆化搜索 数组 哈希表 字符串 动态规划 👍 2174 👎 0
+
 
 /**
  * 139, 单词拆分
  * @author Aaron Zhu
- * @date 2022-6-21
+ * @date 2023-7-1
  */
 public class WordBreak_139{
     
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        List<String> list = new ArrayList<>();
-        list.add("leet");
-        list.add("code");
-        boolean res = solution.wordBreak("leetcode", list);
-        System.out.println("gg");
+        Solution1 solution = new Solution1();
     }
 
     /**
-     * DFS
+     * DP+剪枝优化
      */
-    public static class Solution {
-        private Set<String> words;
-
-        private String str;
-
-        private boolean res;
-
-        private Map<String, Boolean> cache;
+    public static class Solution3 {
 
         public boolean wordBreak(String s, List<String> wordDict) {
-            init(s, wordDict);
-            search(0, 0);
-            return res;
-        }
-
-        private void init(String s, List<String> wordDict) {
-            words = new HashSet<>( wordDict );
-            str = s;
-            res = false;
-            cache = new HashMap<>();
-        }
-
-        private boolean search(int startIndex, int endIndex) {
-            String key = startIndex+"~"+endIndex;
-            if( cache.containsKey(key) ) {
-                return cache.get(key);
+            Set<String> words = new HashSet<>();
+            int wordMaxLen = 0;
+            for (String word : wordDict) {
+                words.add(word);
+                wordMaxLen = Math.max(wordMaxLen, word.length());
             }
 
-            if( res==true ) {
-                cache.put(key, true);
-                return true;
-            } else if( startIndex>=str.length() ) {
-                cache.put(key, true);
-                res = true;
-                return true;
-            }
-
-            boolean res1 = false;
-            boolean res2 = false;
-
-            String subStr = str.substring(startIndex, endIndex+1);
-            // 字符存在于字典当中, 则取用该单词, 然后下一个字符从头开始搜索
-            if( words.contains(subStr) ) {
-                res1 = search(endIndex+1, endIndex+1);
-            }
-
-            // 字符未匹配完, 则继续将下一个字符作为当前字符串进行搜索
-            if( endIndex+1 < str.length() ) {
-                res2 = search(startIndex, endIndex+1);
-            }
-
-            boolean res = res1 || res2;
-            cache.put(key, res);
-            return res;
-        }
-
-    }
-
-    /**
-     * DP
-     */
-    public static class Solution1 {
-        public boolean wordBreak(String s, List<String> wordDict) {
-            Set<String> set = new HashSet<>(wordDict);
             boolean[] dp = new boolean[s.length()+1];
             dp[0] = true;
-
-            for (int i=1; i<=s.length(); i++) {
-                for (int j=0; j<i; j++) {
-                    if( dp[j] && set.contains(s.substring(j, i)) ) {
+            for (int i=1; i<dp.length; i++) {
+                // 子串s.substring(j,i)的长度 如果 超过 字典中字符串的最大长度，显然无必要继续搜索下去
+                for (int j=i-1; j>=0 && (i-j)<=wordMaxLen ; j--) {
+                    if( dp[j] && words.contains( s.substring(j,i) ) ) {
                         dp[i] = true;
                         break;
                     }
                 }
             }
 
-            return dp[ s.length() ];
+            return dp[s.length()];
         }
     }
 
-}
+    /**
+     * DP
+     */
+    public static class Solution2 {
 
+        public boolean wordBreak(String s, List<String> wordDict) {
+            Set<String> words = new HashSet<>( wordDict );
+            boolean[] dp = new boolean[s.length()+1];
+            dp[0] = true;
+            for (int i=1; i<dp.length; i++) {
+                for (int j=0; j<i; j++) {
+                    if( dp[j] && words.contains( s.substring(j,i) ) ) {
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+
+            return dp[s.length()];
+        }
+    }
+
+    /**
+     * 记忆化搜索
+     */
+    public static class Solution1 {
+
+        /**
+         * Key: 当前位置索引; Value: 下一个待开始匹配的位置索引集合
+         */
+        private static Map<Integer, List<Integer>> index2NextsMap;
+
+        private static boolean searchFlag;
+
+        private static String s;
+
+        private static List<String> wordDict;
+
+        private static Map<Integer, Boolean> dp;
+
+        public boolean wordBreak(String s, List<String> wordDict) {
+            init(s, wordDict);
+            dfs(0);
+            return searchFlag;
+        }
+
+        private void init(String s, List<String> wordDict) {
+            this.s = s;
+            this.wordDict = wordDict;
+            index2NextsMap = new HashMap<>();
+            searchFlag = false;
+            dp = new HashMap<>();
+        }
+
+        private boolean dfs(int start) {
+            // 记忆化搜索
+            if( dp.containsKey(start) ) {
+                return dp.get(start);
+            }
+
+            // base case
+            if( start==s.length() ) {
+                searchFlag = true;
+                return searchFlag;
+            } else if( start > s.length() ) {
+                searchFlag = false;
+                return searchFlag;
+            }
+
+            // 获取可选择列表
+            List<Integer> nextStartSet = getValidNextStarts(start);
+            for (int nextStart : nextStartSet ) {
+                boolean res = dfs( nextStart );   //作出选择
+                if( res ) {
+                    dp.put(start, true);
+                    return true;
+                }
+            }
+
+            dp.put(start, false);
+            return false;
+        }
+
+        private List<Integer> getValidNextStarts(int index) {
+            if( index2NextsMap.containsKey(index) ) {
+                return index2NextsMap.get( index );
+            }
+
+            Set<String> validWords = new HashSet<>();
+            for (int i=index,j=0; i<s.length(); i++,j++) {
+                char ch = s.charAt(i);
+                if( j==0 ) {
+                    for (String word : wordDict) {
+                        if( ch == word.charAt(j) ) {
+                            validWords.add( word );
+                        }
+                    }
+                } else {
+                    int finalJ = j;
+                    validWords.removeIf(e -> e.length()>finalJ && e.charAt(finalJ) != ch );
+                }
+            }
+
+            List<Integer> nextStartSet = validWords.stream()
+                .map( e -> e.length()+index )
+                .sorted( Comparator.reverseOrder() )
+                .collect( Collectors.toList() );
+            index2NextsMap.put( index, nextStartSet );
+            return nextStartSet;
+        }
+
+    }
+
+}
